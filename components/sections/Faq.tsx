@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RotatedNote } from "@/components/ui/RotatedNote";
@@ -36,10 +37,10 @@ export function Faq({ content }: { content: FaqContent }) {
               </span>
               <div className="flex flex-col gap-1">
                 <p className="text-sm text-navy-500">{content.support.text}</p>
-                <a href="#contact" className="link-arrow">
+                <Link href="/contact" className="link-arrow">
                   {content.support.cta}
                   <Icon name="arrow-right" size={15} />
-                </a>
+                </Link>
               </div>
             </div>
           </Reveal>

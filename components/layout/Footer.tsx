@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Container } from "@/components/ui/Container";
 import { Icon } from "@/components/ui/Icon";
@@ -21,7 +22,9 @@ export function Footer() {
       <Container className="py-14 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.1fr]">
           <div className="flex flex-col gap-5">
-            <Logo tone="light" />
+            <Link href="/" aria-label="Africa BESC — accueil" className="w-fit">
+              <Logo tone="light" className="h-10 lg:h-11" />
+            </Link>
             <p className="max-w-xs text-sm leading-relaxed text-white/60">
               {footer.tagline}
             </p>
@@ -47,12 +50,12 @@ export function Footer() {
               <ul className="flex flex-col gap-2.5 text-sm">
                 {column.links.map((link) => (
                   <li key={`${column.title}-${link.label}`}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-white/60 transition hover:text-gold-400"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

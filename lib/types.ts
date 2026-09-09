@@ -23,7 +23,12 @@ export type IconName =
   | "linkedin"
   | "facebook"
   | "whatsapp"
-  | "clock";
+  | "clock"
+  | "truck"
+  | "plane"
+  | "ship"
+  | "route"
+  | "file-check";
 
 export interface NavLink {
   label: string;
@@ -85,8 +90,8 @@ export interface CountriesContent {
   rotatedNote: string;
   mapValue: string;
   mapLabel: string;
-  footnoteValue: string;
-  footnoteLabel: string;
+  // footnoteValue: string;
+  // footnoteLabel: string;
   list: CountryItem[];
 }
 
@@ -170,6 +175,92 @@ export interface FooterContent {
   legal: string;
 }
 
+export interface ContactContent {
+  metaTitle: string;
+  metaDescription: string;
+  label: string;
+  title: string;
+  titleAccent: string;
+  subtitle: string;
+  form: {
+    lastName: string;
+    firstName: string;
+    email: string;
+    subject: string;
+    subjectPlaceholder: string;
+    message: string;
+    messagePlaceholder: string;
+    submit: string;
+    sending: string;
+    successTitle: string;
+    successBody: string;
+    another: string;
+    errorTitle: string;
+    errorBody: string;
+    required: string;
+    invalidEmail: string;
+    consent: string;
+  };
+  info: {
+    title: string;
+    intro: string;
+    emailLabel: string;
+    phoneLabel: string;
+    addressLabel: string;
+    hoursLabel: string;
+    hoursValue: string;
+  };
+}
+
+export interface QuoteContent {
+  navLabel: string;
+  metaTitle: string;
+  metaDescription: string;
+  /** JotForm URL — replace with the real form link. */
+  formUrl: string;
+  hero: {
+    label: string;
+    chips: string[];
+    title: string;
+    titleAccent: string;
+    subtitle: string;
+    primaryCta: string;
+    secondaryCta: string;
+    imageAlt: string;
+    imageNote: string;
+  };
+  intro: {
+    label: string;
+    title: string;
+    titleAccent: string;
+    body: string[];
+    points: string[];
+    imageAlt: string;
+  };
+  coverage: {
+    label: string;
+    title: string;
+    titleAccent: string;
+    subtitle: string;
+    items: FeatureItem[];
+  };
+  steps: {
+    label: string;
+    title: string;
+    titleAccent: string;
+    items: { title: string; description: string }[];
+  };
+  cta: {
+    label: string;
+    title: string;
+    titleAccent: string;
+    subtitle: string;
+    primaryCta: string;
+    note: string;
+    imageAlt: string;
+  };
+}
+
 export interface Dictionary {
   langLabel: Record<Lang, string>;
   nav: {
@@ -185,5 +276,7 @@ export interface Dictionary {
   ctaBanner: CtaBannerContent;
   testimonials: TestimonialsContent;
   faq: FaqContent;
+  contact: ContactContent;
+  quote: QuoteContent;
   footer: FooterContent;
 }

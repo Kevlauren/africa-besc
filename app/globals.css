@@ -13,6 +13,11 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* Keep anchor targets clear of the fixed header. */
+  :where(section[id], [id].scroll-anchor) {
+    scroll-margin-top: 5.5rem;
+  }
+
   body {
     @apply bg-cream text-ink font-sans antialiased;
   }

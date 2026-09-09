@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Icon } from "./Icon";
 import type { IconName } from "@/lib/types";
@@ -73,15 +74,28 @@ export const Button = forwardRef<
 
   if ("href" in rest && rest.href !== undefined) {
     const { href, ...anchorRest } = rest as ButtonAsLink;
+    const isExternal = /^(https?:|mailto:|tel:)/.test(href);
+    if (isExternal) {
+      return (
+        <a
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          href={href}
+          className={classes}
+          {...anchorRest}
+        >
+          {content}
+        </a>
+      );
+    }
     return (
-      <a
+      <Link
         ref={ref as React.Ref<HTMLAnchorElement>}
         href={href}
         className={classes}
         {...anchorRest}
       >
         {content}
-      </a>
+      </Link>
     );
   }
 

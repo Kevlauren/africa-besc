@@ -1,42 +1,21 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 import type { CountryItem } from "@/lib/types";
-
-/** Approximate marker positions on the stylised continent (viewBox 1000x1000). */
-const MARKERS: Record<string, { x: number; y: number }> = {
-  // FR names
-  "Sénégal": { x: 150, y: 452 },
-  "Guinée-Bissau": { x: 156, y: 488 },
-  "Guinée": { x: 208, y: 502 },
-  "Ghana": { x: 322, y: 588 },
-  "Togo": { x: 350, y: 580 },
-  "Bénin": { x: 374, y: 573 },
-  "Nigeria": { x: 452, y: 566 },
-  "Guinée équatoriale": { x: 470, y: 648 },
-  "République centrafricaine": { x: 560, y: 602 },
-  "Soudan du Sud": { x: 648, y: 545 },
-  "Burundi": { x: 650, y: 700 },
-  // EN names
-  Senegal: { x: 150, y: 452 },
-  "Guinea-Bissau": { x: 156, y: 488 },
-  Guinea: { x: 208, y: 502 },
-  Benin: { x: 374, y: 573 },
-  "Equatorial Guinea": { x: 470, y: 648 },
-  "Central African Republic": { x: 560, y: 602 },
-  "South Sudan": { x: 648, y: 545 },
-};
-
-const AFRICA_PATH =
-  "M262 96 C240 150 250 180 235 210 C250 250 300 250 300 300 C300 340 250 360 235 400 L150 430 C120 452 130 500 176 520 C210 540 250 545 272 560 C300 585 305 620 330 652 C340 702 330 762 362 802 C402 882 480 942 546 952 C602 942 622 882 632 822 C662 782 712 762 742 722 C792 662 822 560 862 470 C882 430 902 400 882 370 C852 350 822 380 802 360 C792 300 762 220 722 150 C702 110 682 95 642 92 L320 90 C296 90 276 90 262 96 Z";
+import { AFRICA_PATHS, AFRICA_VIEWBOX } from "./africaPaths";
 
 interface AfricaMapProps {
+  /** Covered countries (extensible: add { name, code } in lib/i18n and, if the
+   *  <path id> isn't in africa.svg yet, add it there and re-run the script). */
   countries: CountryItem[];
+  /** Currently selected country NAME. */
   selected: string;
   onSelect: (name: string) => void;
   className?: string;
 }
+
+type Centroid = { x: number; y: number };
 
 export function AfricaMap({
   countries,
@@ -44,113 +23,181 @@ export function AfricaMap({
   onSelect,
   className,
 }: AfricaMapProps) {
-  const points = useMemo(
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const [centroids, setCentroids] = useState<Record<string, Centroid>>({});
+
+  const coveredByCode = useMemo(() => {
+    const map = new Map<string, CountryItem>();
+    for (const c of countries) map.set(c.code.toUpperCase(), c);
+    return map;
+  }, [countries]);
+
+  const nameByCode = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const c of countries) map.set(c.code.toUpperCase(), c.name);
+    return map;
+  }, [countries]);
+
+  const selectedCode = useMemo(
     () =>
-      countries
-        .map((c) => ({ country: c, pos: MARKERS[c.name] }))
-        .filter((p): p is { country: CountryItem; pos: { x: number; y: number } } =>
-          Boolean(p.pos),
-        ),
-    [countries],
+      countries.find((c) => c.name === selected)?.code.toUpperCase() ?? null,
+    [countries, selected],
   );
 
-  const selectedPos = MARKERS[selected];
+  // Measure covered-country centroids once the paths are in the DOM.
+  const measure = useCallback(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const next: Record<string, Centroid> = {};
+    for (const country of countries) {
+      const code = country.code.toUpperCase();
+      const el = svg.querySelector<SVGPathElement>(`#africa-${code}`);
+      if (!el) continue;
+      try {
+        const b = el.getBBox();
+        if (b.width || b.height) {
+          next[code] = { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+        }
+      } catch {
+        /* getBBox can throw in detached/hidden trees */
+      }
+    }
+    setCentroids(next);
+  }, [countries]);
+
+  useEffect(() => {
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
+
+  const activate = (code: string) => {
+    const name = nameByCode.get(code);
+    if (name) onSelect(name);
+  };
+
+  const selectedCentroid = selectedCode ? centroids[selectedCode] : undefined;
 
   return (
     <div className={cn("relative", className)}>
       <svg
-        viewBox="0 0 1000 1000"
+        ref={svgRef}
+        viewBox={AFRICA_VIEWBOX}
         className="h-full w-full"
         role="group"
-        aria-label="Carte des destinations africaines couvertes"
+        aria-label="Carte interactive des destinations africaines couvertes"
       >
-        <defs>
-          <linearGradient id="africaFill" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#E7E1D6" />
-            <stop offset="100%" stopColor="#D9D2C4" />
-          </linearGradient>
-        </defs>
+        {/* Continent — all countries */}
+        <g strokeLinejoin="round">
+          {AFRICA_PATHS.map((p) => {
+            const covered = coveredByCode.get(p.id);
+            const isSelected = p.id === selectedCode;
 
-        <path
-          d={AFRICA_PATH}
-          fill="url(#africaFill)"
-          stroke="#C4BBA8"
-          strokeWidth={2}
-        />
+            if (!covered) {
+              return (
+                <path
+                  key={p.id}
+                  d={p.d}
+                  fill="#E7E1D4"
+                  stroke="#D8D0BE"
+                  strokeWidth={0.35}
+                />
+              );
+            }
 
-        {/* selected-country halo */}
-        {selectedPos ? (
-          <circle
-            cx={selectedPos.x}
-            cy={selectedPos.y}
-            r={46}
-            fill="rgba(242,166,59,0.18)"
-            className="transition-all duration-300"
-          />
-        ) : null}
-
-        {points.map(({ country, pos }) => {
-          const isActive = country.name === selected;
-          return (
-            <g
-              key={country.name}
-              role="button"
-              tabIndex={0}
-              aria-label={country.name}
-              aria-pressed={isActive}
-              className="cursor-pointer focus:outline-none"
-              onClick={() => onSelect(country.name)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  onSelect(country.name);
-                }
-              }}
-            >
-              <circle
-                cx={pos.x}
-                cy={pos.y}
-                r={isActive ? 15 : 9}
-                fill={isActive ? "#E8942A" : "#F2A63B"}
-                stroke="#fff"
-                strokeWidth={isActive ? 4 : 3}
-                className="transition-all duration-200"
+            return (
+              <path
+                key={p.id}
+                id={`africa-${p.id}`}
+                d={p.d}
+                role="button"
+                tabIndex={0}
+                aria-label={covered.name}
+                aria-pressed={isSelected}
+                onClick={() => activate(p.id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    activate(p.id);
+                  }
+                }}
+                className="cursor-pointer outline-none transition-colors duration-200 focus-visible:stroke-navy-700"
+                fill={isSelected ? "#E8942A" : "#F2A63B"}
+                stroke="#ffffff"
+                strokeWidth={isSelected ? 0.9 : 0.6}
               />
-              <circle
-                cx={pos.x}
-                cy={pos.y}
-                r={26}
-                fill="transparent"
-              />
-            </g>
-          );
-        })}
+            );
+          })}
+        </g>
 
-        {/* tooltip */}
-        {selectedPos ? (
+        {/* Markers for covered countries (reliable hit target, esp. small ones) */}
+        <g>
+          {Object.entries(centroids).map(([code, c]) => {
+            const isSelected = code === selectedCode;
+            return (
+              <g
+                key={code}
+                role="button"
+                tabIndex={0}
+                aria-label={nameByCode.get(code)}
+                aria-pressed={isSelected}
+                onClick={() => activate(code)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    activate(code);
+                  }
+                }}
+                className="cursor-pointer outline-none"
+              >
+                {isSelected ? (
+                  <circle
+                    cx={c.x}
+                    cy={c.y}
+                    r={3.6}
+                    fill="rgba(232,148,42,0.25)"
+                  />
+                ) : null}
+                <circle
+                  cx={c.x}
+                  cy={c.y}
+                  r={isSelected ? 1.7 : 1.15}
+                  fill={isSelected ? "#B45309" : "#7a4a12"}
+                  stroke="#fff"
+                  strokeWidth={isSelected ? 0.6 : 0.45}
+                  className="transition-all duration-200"
+                />
+                <circle cx={c.x} cy={c.y} r={4} fill="transparent" />
+              </g>
+            );
+          })}
+        </g>
+
+        {/* Tooltip near the selected country */}
+        {selectedCentroid ? (
           <g
-            transform={`translate(${selectedPos.x}, ${selectedPos.y - 34})`}
+            transform={`translate(${selectedCentroid.x}, ${selectedCentroid.y - 6})`}
             className="pointer-events-none"
           >
             <rect
-              x={-Math.max(38, selected.length * 8.5) / 2}
-              y={-26}
-              width={Math.max(38, selected.length * 8.5)}
-              height={26}
-              rx={8}
+              x={-Math.max(14, selected.length * 1.85)}
+              y={-7.4}
+              width={Math.max(28, selected.length * 3.7)}
+              height={7.2}
+              rx={2}
               fill="#152238"
             />
             <text
               x={0}
-              y={-8}
+              y={-2.2}
               textAnchor="middle"
-              fontSize={15}
+              fontSize={4.2}
               fontWeight={600}
               fill="#ffffff"
             >
               {selected}
             </text>
-            <path d="M-6 0 L6 0 L0 8 Z" fill="#152238" />
+            <path d="M-2 0 L2 0 L0 2.4 Z" fill="#152238" />
           </g>
         ) : null}
       </svg>

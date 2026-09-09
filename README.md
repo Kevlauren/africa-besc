@@ -27,8 +27,11 @@ npm run lint     # ESLint (next/core-web-vitals)
 
 ```
 app/
-  layout.tsx        Métadonnées SEO/OpenGraph, polices, <LanguageProvider>
-  page.tsx          Point d'entrée -> <HomePage />
+  layout.tsx        SEO/OpenGraph, polices, <LanguageProvider>, <Header/> + <Footer/>
+  page.tsx          Accueil -> <HomePage />
+  contact/page.tsx  Page /contact -> <Contact /> (formulaire)
+  cotation/page.tsx Page /cotation -> <Quote /> (présentation cotation transit)
+  api/contact/route.ts  Route POST : valide le formulaire (TODO: envoi réel)
   globals.css       Directives Tailwind + classes utilitaires (.eyebrow, .card-surface…)
   icon.svg          Favicon
 
@@ -71,8 +74,40 @@ mémorisé dans `localStorage`. Le rendu serveur se fait en français pour le SE
 
 ## Médias
 
-Les visuels du domaine (port, conteneurs, documents, carte, drapeaux) sont fournis
-dans `public/images/` :
+### Logo (à uploader)
+
+`components/layout/Logo.tsx` est un **emplacement** : déposez vos fichiers dans
+`public/images/logo/` en gardant les noms `logo-light.svg` (fond sombre : header
+sur le hero + footer) et `logo-dark.svg` (fond clair : header au scroll + pages
+internes). Voir `public/images/logo/README.md`. Aucune modification de code après
+l'upload ; un logo provisoire s'affiche en attendant. Le composant réserve la
+hauteur (`h-8`→`h-10` header, `h-10`→`h-11` footer) et met `width:auto`
+(`max-w-[200px]`), en gérant les deux thèmes.
+
+### Page Cotation transit
+
+`/cotation` (`app/cotation/page.tsx` → `components/sections/Quote.tsx`) : présente
+le service de demande de cotation de transit (hero image + dégradé, « Le service »,
+modes couverts, étapes, bannière CTA), même direction design que l'accueil.
+
+Le bouton **« Obtenir une demande d'import »** (2 emplacements : hero + bannière)
+redirige vers un **JotForm**. Remplacez l'URL dans `lib/i18n/fr.ts` **et**
+`en.ts` → `quote.formUrl` (`https://form.jotform.com/VOTRE-ID-JOTFORM`).
+
+### Page Contact
+
+`/contact` (`app/contact/page.tsx` → `components/sections/Contact.tsx`) : titre +
+coordonnées + formulaire **Nom · Prénoms · E-mail · Sujet · Message**
+(`components/sections/ContactForm.tsx`, validation + états d'envoi + honeypot).
+Accès : lien « Contact » du header et bouton « Nous contacter » de la FAQ (plus
+les CTA du hero / de la bannière). Le formulaire POST vers `app/api/contact/route.ts`
+qui valide et renvoie 200 — **branchez l'envoi réel** (e-mail / CRM) à l'endroit
+marqué `TODO` dans ce fichier.
+
+### Médias du domaine
+
+Les visuels (port, conteneurs, documents, carte, drapeaux) sont dans
+`public/images/` :
 
 ```
 public/images/
@@ -80,8 +115,24 @@ public/images/
   services/   ectn-document.jpg, besc-containers.jpg, ctn-world-map.jpg,
               assistance-paperwork.jpg, + variantes
   flags/      bj tg gh ng sn gn gw bi ss gq cf .svg  (codes ISO)
-  CREDITS.md  sources + licences (Pexels + flagcdn, libres, sans attribution)
+  africa.svg  fond de carte MapSVG (un <path> par pays, id = code ISO)
+  CREDITS.md  sources + licences (Pexels + flagcdn + MapSVG, libres)
 ```
+
+### Carte d'Afrique interactive
+
+`components/africa/AfricaMap.tsx` rend `africa.svg` : chaque pays de
+`countries.list` (dans `lib/i18n/*.ts`) est cliquable / survolable (surbrillance
++ infobulle + marqueur), les autres servent de fond neutre. Le module
+`components/africa/africaPaths.ts` est **généré** :
+
+```bash
+node scripts/gen-africa-paths.mjs   # relit africa.svg -> africaPaths.ts
+```
+
+Pour ajouter une destination : ajoutez `{ name, code }` dans `countries.list`
+(FR + EN). Si le `<path id="XX">` correspondant n'existe pas encore dans
+`africa.svg`, ajoutez-le puis relancez le script.
 
 Les chemins sont référencés dans `lib/i18n/*.ts` (`hero.image`,
 `services.items[].image`, `countries.list[].code`). `components/ui/ImageSlot.tsx`

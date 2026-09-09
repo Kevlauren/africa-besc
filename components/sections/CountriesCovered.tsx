@@ -100,7 +100,7 @@ export function CountriesCovered({ content }: { content: CountriesContent }) {
                 countries={content.list}
                 selected={selected}
                 onSelect={setSelected}
-                className="mx-auto aspect-square w-full max-w-md"
+                className="mx-auto aspect-[239/217] w-full max-w-md"
               />
               <div className="mt-2 flex items-center justify-center gap-3 border-t border-cream-300/70 pt-4 text-center">
                 <span className="text-3xl font-bold text-navy-700">
@@ -113,16 +113,6 @@ export function CountriesCovered({ content }: { content: CountriesContent }) {
             </div>
           </Reveal>
         </div>
-
-        <Reveal
-          delay={80}
-          className="mt-12 flex flex-col items-center gap-2 border-t border-cream-300/70 pt-8 text-center"
-        >
-          <span className="script-accent text-5xl">{content.footnoteValue}</span>
-          <span className="text-sm font-medium uppercase tracking-[0.16em] text-navy-400">
-            {content.footnoteLabel}
-          </span>
-        </Reveal>
       </Container>
     </section>
   );

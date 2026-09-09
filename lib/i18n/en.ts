@@ -6,13 +6,14 @@ export const en: Dictionary = {
     menuLabel: "Menu",
     cta: "Get my ECTN",
     links: [
-      { label: "Home", href: "#accueil" },
-      { label: "Services", href: "#services" },
-      { label: "Covered countries", href: "#pays-couverts" },
-      { label: "How it works", href: "#pourquoi" },
-      { label: "About", href: "#temoignages" },
-      { label: "FAQ", href: "#faq" },
-      { label: "Contact", href: "#contact" },
+      { label: "Home", href: "/" },
+      { label: "Services", href: "/#services" },
+      { label: "Transit quote", href: "/cotation" },
+      // { label: "Covered countries", href: "/#pays-couverts" },
+      { label: "How it works", href: "/#pourquoi" },
+      // { label: "About", href: "/#temoignages" },
+      { label: "FAQ", href: "/#faq" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   hero: {
@@ -89,8 +90,6 @@ export const en: Dictionary = {
     rotatedNote: "Africa at the heart of our services",
     mapValue: "11",
     mapLabel: "African destinations covered",
-    footnoteValue: "11",
-    footnoteLabel: "African destinations covered",
     list: [
       { name: "Benin", code: "bj", flag: "🇧🇯" },
       { name: "Togo", code: "tg", flag: "🇹🇬" },
@@ -240,35 +239,185 @@ export const en: Dictionary = {
       cta: "Contact us",
     },
   },
+  contact: {
+    metaTitle: "Contact",
+    metaDescription:
+      "Get in touch with the Africa BESC team for your ECTN / BESC / CTN formalities. Reply within 24 business hours.",
+    label: "Contact",
+    title: "Let's talk about your",
+    titleAccent: "shipment",
+    subtitle:
+      "A question about ECTN, BESC or CTN, a quote, an ongoing file? Write to us — our team replies within 24 business hours.",
+    form: {
+      lastName: "Last name",
+      firstName: "First name",
+      email: "Email",
+      subject: "Subject",
+      subjectPlaceholder: "e.g. ECTN request for Benin",
+      message: "Message",
+      messagePlaceholder:
+        "Describe your need: port of departure, destination, type of goods…",
+      submit: "Send message",
+      sending: "Sending…",
+      successTitle: "Message sent",
+      successBody:
+        "Thank you! Your message has been sent. Our team replies within 24 business hours.",
+      another: "Send another message",
+      errorTitle: "Sending failed",
+      errorBody:
+        "Something went wrong. Try again in a moment or email us directly at ",
+      required: "This field is required.",
+      invalidEmail: "Enter a valid email address.",
+      consent:
+        "By submitting this form, you agree that your information may be used to process your request.",
+    },
+    info: {
+      title: "Our details",
+      intro: "You can also reach us directly through these channels.",
+      emailLabel: "Email",
+      phoneLabel: "Phone",
+      addressLabel: "Address",
+      hoursLabel: "Availability",
+      hoursValue: "24/7 — reply within 24 business hours",
+    },
+  },
+  quote: {
+    navLabel: "Transit quote",
+    metaTitle: "Transit quote request",
+    metaDescription:
+      "Get a transit quote for your imports to Africa: ocean, air, road and customs clearance. Detailed reply within 24 to 48 hours.",
+    formUrl: "https://form.jotform.com/VOTRE-ID-JOTFORM",
+    hero: {
+      label: "Transit quotation",
+      chips: ["Fast reply", "Personal support", "Reliable service"],
+      title: "Your imports,",
+      titleAccent: "made clear.",
+      subtitle:
+        "Get a fast, reliable transit quote tailored to your needs. We support you from pickup to delivery, across Africa.",
+      primaryCta: "Get an import request",
+      secondaryCta: "Talk to an advisor",
+      imageAlt:
+        "Port terminal: container ship, cranes and a transit agent on the quay",
+      imageNote: "From the world to Africa, simply.",
+    },
+    intro: {
+      label: "The service",
+      title: "One point of contact for your whole",
+      titleAccent: "import transit",
+      body: [
+        "From pickup at your supplier to delivery of your goods, we handle every link of the chain: freight booking, document tracking, customs formalities and final haulage.",
+        "You fill in a single request. We come back with a clear quote, line by line, and an estimated transit time.",
+      ],
+      points: [
+        "Ocean freight (FCL / LCL), air and road",
+        "Cargo insurance and packing on request",
+        "Import and export customs declaration",
+        "Pre-carriage and final delivery",
+        "ECTN / BESC / CTN included in the file",
+      ],
+      imageAlt: "Logistics operator checking a transit file",
+    },
+    coverage: {
+      label: "Modes covered",
+      title: "The right mode for every",
+      titleAccent: "shipment",
+      subtitle:
+        "We compare the options and recommend the combination that best fits your budget and timeline.",
+      items: [
+        {
+          icon: "ship",
+          title: "Ocean",
+          description:
+            "Full container (FCL) or groupage (LCL) from major ports, tracked through to discharge.",
+        },
+        {
+          icon: "plane",
+          title: "Air",
+          description:
+            "For urgent or high-value shipments: booking, handling and air documentation.",
+        },
+        {
+          icon: "truck",
+          title: "Road",
+          description:
+            "Pre- and post-carriage, regional transport and final delivery to your site.",
+        },
+        {
+          icon: "file-check",
+          title: "Customs",
+          description:
+            "Tariff classification, import/export declaration and regulatory document handling.",
+        },
+      ],
+    },
+    steps: {
+      label: "How it works",
+      title: "From request to",
+      titleAccent: "delivery",
+      items: [
+        {
+          title: "Describe your need",
+          description:
+            "Fill in the form: origin, destination, nature and volume of goods, preferred incoterm.",
+        },
+        {
+          title: "Get your quote",
+          description:
+            "Within 24 to 48 h, a detailed quote with the cost of each item and the estimated transit time.",
+        },
+        {
+          title: "Approve the file",
+          description:
+            "You confirm the quote; we open the transit file and book the freight.",
+        },
+        {
+          title: "We handle the transit",
+          description:
+            "Document tracking, customs and haulage through to final delivery, with a single point of contact.",
+        },
+      ],
+    },
+    cta: {
+      label: "Ready to import?",
+      title: "Start your quote",
+      titleAccent: "request",
+      subtitle:
+        "One form, one priced answer. No commitment required.",
+      primaryCta: "Get an import request",
+      note: "You will be redirected to our secure form.",
+      imageAlt: "Stacked containers in a terminal, ready to ship",
+    },
+  },
   footer: {
     tagline: "Your trusted ECTN & BESC partner for Africa.",
     columns: [
       {
         title: "Navigation",
         links: [
-          { label: "Home", href: "#accueil" },
-          { label: "About", href: "#temoignages" },
-          { label: "Services", href: "#services" },
-          { label: "Covered countries", href: "#pays-couverts" },
-          { label: "FAQ", href: "#faq" },
-          { label: "Contact", href: "#contact" },
+          { label: "Home", href: "/#accueil" },
+          { label: "About", href: "/#temoignages" },
+          { label: "Services", href: "/#services" },
+          { label: "Covered countries", href: "/#pays-couverts" },
+          { label: "FAQ", href: "/#faq" },
+          { label: "Contact", href: "/contact" },
         ],
       },
       {
         title: "Our services",
         links: [
-          { label: "ECTN", href: "#services" },
-          { label: "BESC", href: "#services" },
-          { label: "CTN", href: "#services" },
-          { label: "Document assistance", href: "#services" },
+          { label: "ECTN", href: "/#services" },
+          { label: "BESC", href: "/#services" },
+          { label: "CTN", href: "/#services" },
+          { label: "Document assistance", href: "/#services" },
+          { label: "Transit quote", href: "/cotation" },
         ],
       },
     ],
     contact: {
       title: "Contact",
-      email: "contact@africabesc.com",
+      email: "info@africa-besc.com",
       phone: "+229 01 23 45 67",
-      lines: ["Cotonou, Benin", "France"],
+      lines: ["Cotonou, Bénin", "Sainte Anne la mer, France"],
     },
     legal: "© 2026 Africa BESC. All rights reserved.",
   },

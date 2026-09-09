@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Caveat } from "next/font/google";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -68,12 +70,16 @@ export default function RootLayout({
     <html lang="fr" className={`${inter.variable} ${caveat.variable}`}>
       <body className="min-h-screen bg-cream font-sans text-ink antialiased">
         <a
-          href="#accueil"
+          href="#contenu"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-navy-700 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
         >
           Aller au contenu
         </a>
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <Header />
+          {children}
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

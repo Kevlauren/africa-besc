@@ -20,6 +20,17 @@ pas d'attribution requise.
 | `services/document-signing.jpg` | Signature d'un contrat au stylo plume | https://www.pexels.com/photo/a-person-signing-a-document-in-close-up-shot-8730987/ |
 | `services/containers-colorful.jpg` | Déchargement de conteneurs colorés | https://www.pexels.com/photo/cargo-ship-unloading-colorful-containers-in-port-6595779/ |
 | `services/logistics-clipboard.jpg` | Opérateur logistique avec presse-papiers | https://www.pexels.com/photo/person-with-clipboard-in-warehouse-12234107/ |
+| `cotation/hero-terminal.jpg` | Dockers préparant le chargement au terminal | https://www.pexels.com/photo/shipping-containers-at-port-dock-workers-prepare-for-loading-28438301/ |
+| `cotation/rail-freight.jpg` | Train de fret chargé de conteneurs, terminal de Hambourg | https://www.pexels.com/photo/cargo-train-loaded-with-shipping-containers-at-hamburg-terminal-30720850/ |
+| `cotation/handling.jpg` | Chariot élévateur manutentionnant des conteneurs, port de Livourne | https://www.pexels.com/photo/forklift-handling-shipping-containers-in-livorno-port-38734191/ |
+
+## Carte — `africa.svg` (MapSVG "Africa" blank map)
+
+Tracé vectoriel de l'Afrique, un `<path>` par pays (`id` = code ISO 3166-1
+alpha-2). Le composant interactif `components/africa/AfricaMap.tsx` lit
+`components/africa/africaPaths.ts`, généré depuis ce fichier par
+`node scripts/gen-africa-paths.mjs`. Les pays de `countries` (`lib/i18n`) sont
+rendus cliquables/survolables ; les autres servent de fond.
 
 ## Drapeaux — flagcdn.com (Domaine public)
 

@@ -1,51 +1,116 @@
+"use client";
+
+import { useState } from "react";
 import { cn } from "@/lib/cn";
 
-/** Africa silhouette mark + wordmark, used in the header and footer. */
-export function Logo({
-  className,
-  tone = "dark",
-}: {
+/**
+ * Logo slot.
+ *
+ * Drop your own artwork into `public/images/logo/`:
+ *   - logo-light.svg  (or .png)  -> used on DARK backgrounds
+ *       (header while over the hero, footer)
+ *   - logo-dark.svg   (or .png)  -> used on LIGHT backgrounds
+ *       (header once scrolled / on inner pages)
+ *
+ * Keep both files the SAME height/aspect ratio. The component reserves the
+ * height set via `className` (e.g. `h-9 lg:h-11`) and scales the image to fit
+ * (`width: auto`, capped at `max-w-[200px]`). No code change needed after upload
+ * — until the files exist a branded placeholder is shown.
+ */
+
+const LOGO_SRC: Record<"light" | "dark", string> = {
+  light: "/images/logo/logo-light-besc.svg",
+  dark: "/images/logo/logo-dark-besc.svg",
+};
+
+interface LogoProps {
+  tone?: "light" | "dark";
+  /** Sets the reserved height, e.g. "h-9 lg:h-11". */
   className?: string;
-  tone?: "dark" | "light";
-}) {
+}
+
+export function Logo({ tone = "dark", className }: LogoProps) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <span
+      className={cn(
+        "inline-flex h-8 max-w-[200px] items-center [&_img]:h-full [&_img]:w-auto [&_svg]:h-full [&_svg]:w-auto",
+        className,
+      )}
+    >
+      {failed ? (
+        <LogoMark tone={tone} />
+      ) : (
+        // Deliberate plain <img>: this is an upload slot for the client's own
+        // logo file (see public/images/logo/README.md), not an optimized asset.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={LOGO_SRC[tone]}
+          alt="Africa BESC"
+          onError={() => setFailed(true)}
+          className="block max-h-full max-w-full object-contain object-left"
+        />
+      )}
+    </span>
+  );
+}
+
+/** Inline fallback lockup — mirrors the shipped placeholder SVGs. */
+export function LogoMark({ tone = "dark" }: { tone?: "light" | "dark" }) {
   const isLight = tone === "light";
   return (
-    <span className={cn("inline-flex items-center gap-2.5", className)}>
-      <span
-        className={cn(
-          "flex h-9 w-9 items-center justify-center rounded-xl",
-          isLight ? "bg-white/10" : "bg-navy-700",
-        )}
+    <svg
+      viewBox="0 0 210 48"
+      className="h-full w-auto"
+      role="img"
+      aria-label="Africa BESC"
+    >
+      <rect
+        x="0"
+        y="4"
+        width="40"
+        height="40"
+        rx="10"
+        fill={isLight ? "rgba(255,255,255,0.1)" : "#152238"}
+      />
+      <circle
+        cx="20"
+        cy="24"
+        r="11"
+        fill="none"
+        stroke="#F2A63B"
+        strokeWidth="3.2"
+      />
+      <path
+        d="M20 13c4 4 4 18 0 22"
+        fill="none"
+        stroke="#F2A63B"
+        strokeWidth="2.4"
+      />
+      <path d="M9 24h22" stroke="#F2A63B" strokeWidth="2.4" />
+      <text
+        x="52"
+        y="24"
+        fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
+        fontSize="18"
+        fontWeight="800"
+        letterSpacing="0.4"
+        fill={isLight ? "#ffffff" : "#152238"}
       >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-          <path
-            d="M8.5 2.2c-.7 1.6-.4 2.6-1.1 3.5-.6.8-2 .9-2.6 1.9-.6 1 .1 2.2-.2 3.4-.3 1.2-1.4 1.9-1.3 3.2.1 1.6 1.6 2.4 2.2 3.9.5 1.3.2 2.7 1.1 3.7.8.9 2.2.9 3.2 1.6.6.4 1 1.3 1.9 1.4.9 0 1.5-.9 1.9-1.8.6-1.3.3-2.6 1.1-3.7.9-1.3 2.7-1.6 3.3-3.1.5-1.3-.2-2.6.1-3.9.2-1 1-1.8.9-2.9-.1-1.2-1.2-1.9-1.9-2.9-.6-.9-.6-2.1-1.4-2.8-.8-.7-2-.5-3-.9-.8-.3-1.4-1.2-2.3-1.3-.9 0-1.5.6-1.9 1.9Z"
-            fill={isLight ? "#F2A63B" : "#F2A63B"}
-          />
-          <path
-            d="M13.5 8.5 12 11l1 1.5-.8 2 2-1.2 1.6.7-.4-2 1.2-1.6-2-.2-1.1-1.4Z"
-            fill={isLight ? "#152238" : "#ffffff"}
-          />
-        </svg>
-      </span>
-      <span className="leading-none">
-        <span
-          className={cn(
-            "block text-[0.95rem] font-extrabold tracking-tight",
-            isLight ? "text-white" : "text-navy-700",
-          )}
-        >
-          AFRICA <span className="text-gold-500">BESC</span>
-        </span>
-        <span
-          className={cn(
-            "block text-[0.6rem] font-semibold uppercase tracking-[0.3em]",
-            isLight ? "text-white/50" : "text-navy-300",
-          )}
-        >
-          ECTN · BESC · CTN
-        </span>
-      </span>
-    </span>
+        AFRICA <tspan fill="#F2A63B">BESC</tspan>
+      </text>
+      <text
+        x="52.5"
+        y="38"
+        fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
+        fontSize="7.5"
+        fontWeight="600"
+        letterSpacing="2.6"
+        fill={isLight ? "rgba(255,255,255,0.55)" : "#7389AE"}
+      >
+        ECTN · BESC · CTN
+      </text>
+    </svg>
   );
 }

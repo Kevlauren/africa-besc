@@ -53,11 +53,11 @@ export function CtaBanner({ content }: { content: CtaBannerContent }) {
               {content.subtitle}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button href="#contact" size="lg" icon="arrow-right">
+              <Button href="/contact" size="lg" icon="arrow-right">
                 {content.primaryCta}
               </Button>
               <Button
-                href="#contact"
+                href="/contact"
                 size="lg"
                 variant="outline"
                 icon="phone"

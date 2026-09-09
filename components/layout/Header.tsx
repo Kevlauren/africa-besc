@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/cn";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Container } from "@/components/ui/Container";
@@ -9,8 +11,12 @@ import { Icon } from "@/components/ui/Icon";
 import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
+/** Routes whose page opens with a dark full-bleed hero (transparent header). */
+const HERO_ROUTES = new Set(["/"]);
+
 export function Header() {
   const { t } = useLanguage();
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -28,8 +34,9 @@ export function Header() {
     };
   }, [menuOpen]);
 
-  // At the top of the page the header sits on top of the dark hero image.
-  const overHero = !scrolled;
+  // The header is transparent (light content) only while sitting on top of a
+  // page's dark hero. Once scrolled — or anywhere else — it uses the solid theme.
+  const overHero = HERO_ROUTES.has(pathname) && !scrolled;
 
   return (
     <header
@@ -41,13 +48,17 @@ export function Header() {
       )}
     >
       <Container className="flex h-16 items-center justify-between gap-4 lg:h-20">
-        <a href="#accueil" aria-label="Africa BESC" className="shrink-0">
-          <Logo tone={overHero ? "light" : "dark"} />
-        </a>
+        <Link
+          href="/"
+          aria-label="Africa BESC — accueil"
+          className="shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2"
+        >
+          <Logo tone={overHero ? "light" : "dark"} className="h-8 sm:h-9 lg:h-10" />
+        </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
           {t.nav.links.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className={cn(
@@ -58,13 +69,13 @@ export function Header() {
               )}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher tone={overHero ? "dark" : "light"} />
-          <Button href="#contact" size="sm" icon="arrow-right">
+          <Button href="/contact" size="sm" icon="arrow-right">
             {t.nav.cta}
           </Button>
         </div>
@@ -106,7 +117,7 @@ export function Header() {
           )}
         >
           <div className="flex items-center justify-between">
-            <Logo />
+            <Logo tone="dark" className="h-9" />
             <button
               type="button"
               className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-300 bg-white text-navy-600"
@@ -119,21 +130,21 @@ export function Header() {
 
           <nav className="flex flex-col">
             {t.nav.links.map((link) => (
-              <a
+              <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
                 className="border-b border-cream-300/70 py-3 text-[0.95rem] font-medium text-navy-600"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="mt-auto flex flex-col gap-4">
             <LanguageSwitcher tone="light" className="self-start" />
             <Button
-              href="#contact"
+              href="/contact"
               className="w-full"
               icon="arrow-right"
               onClick={() => setMenuOpen(false)}
