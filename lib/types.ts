@@ -42,7 +42,7 @@ export interface HeroContent {
   subtitle: string;
   primaryCta: string;
   secondaryCta: string;
-  note: string;
+  // note: string;
   badgeValue: string;
   badgeLabel: string;
   imageLabel: string;
@@ -216,8 +216,6 @@ export interface QuoteContent {
   navLabel: string;
   metaTitle: string;
   metaDescription: string;
-  /** JotForm URL — replace with the real form link. */
-  formUrl: string;
   hero: {
     label: string;
     chips: string[];
@@ -259,6 +257,144 @@ export interface QuoteContent {
     note: string;
     imageAlt: string;
   };
+  form: QuoteFormContent;
+}
+
+export interface QuoteFormContent {
+  label: string;
+  title: string;
+  titleAccent: string;
+  subtitle: string;
+  sections: {
+    contact: string;
+    route: string;
+    cargo: string;
+    options: string;
+    details: string;
+    documents: string;
+  };
+  fields: {
+    firstName: string;
+    lastName: string;
+    companyName: string;
+    email: string;
+    phone: string;
+    phoneHint: string;
+    originCountry: string;
+    originCity: string;
+    originCityPlaceholder: string;
+    destinationCountry: string;
+    destinationCity: string;
+    destinationCityPlaceholder: string;
+    transportMode: string;
+    incoterms: string;
+    goodsNature: string;
+    goodsNaturePlaceholder: string;
+    grossWeight: string;
+    volume: string;
+    containerType: string;
+    goodsValue: string;
+    currency: string;
+    readyDate: string;
+    message: string;
+    messagePlaceholder: string;
+    optionalSuffix: string;
+  };
+  options: {
+    cargoInsurance: string;
+    customsClearance: string;
+  };
+  files: {
+    proformaInvoice: string;
+    packingList: string;
+    hint: string;
+  };
+  selectPlaceholder: string;
+  consent: string;
+  submit: string;
+  sending: string;
+  successTitle: string;
+  successBody: string;
+  another: string;
+  errorTitle: string;
+  errorBody: string;
+  errors: {
+    required: string;
+    invalidEmail: string;
+    fileTooLarge: string;
+    fileType: string;
+    totalTooLarge: string;
+    consentRequired: string;
+  };
+}
+
+export interface DemandeContent {
+  metaTitle: string;
+  metaDescription: string;
+  label: string;
+  title: string;
+  titleAccent: string;
+  subtitle: string;
+  checklistTitle: string;
+  checklist: string[];
+  sections: {
+    route: string;
+    applicant: string;
+    shipment: string;
+    documents: string;
+    signature: string;
+  };
+  fields: {
+    countryOfLoading: string;
+    destinationCountry: string;
+    destinationHint: string;
+    firstName: string;
+    lastName: string;
+    companyName: string;
+    email: string;
+    phone: string;
+    phoneHint: string;
+    blNumber: string;
+    blNumberHint: string;
+    currency: string;
+    freightPayment: string;
+    incoterms: string;
+    optionalSuffix: string;
+  };
+  selectPlaceholder: string;
+  files: {
+    blDocument: string;
+    commercialInvoice: string;
+    exportDeclaration: string;
+    packingList: string;
+    freightInvoice: string;
+    grayCards: string;
+    grayCardsHint: string;
+    hint: string;
+  };
+  signature: {
+    label: string;
+    hint: string;
+    clear: string;
+  };
+  consent: string;
+  submit: string;
+  sending: string;
+  successTitle: string;
+  successBody: string;
+  another: string;
+  errorTitle: string;
+  errorBody: string;
+  errors: {
+    required: string;
+    invalidEmail: string;
+    fileRequired: string;
+    fileTooLarge: string;
+    fileType: string;
+    totalTooLarge: string;
+    signatureRequired: string;
+    consentRequired: string;
+  };
 }
 
 export interface Dictionary {
@@ -278,5 +414,6 @@ export interface Dictionary {
   faq: FaqContent;
   contact: ContactContent;
   quote: QuoteContent;
+  demande: DemandeContent;
   footer: FooterContent;
 }

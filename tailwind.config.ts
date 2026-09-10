@@ -55,7 +55,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        script: ["var(--font-script)", "cursive"],
+        script: ["var(--font-script)", "Georgia", "serif"],
       },
       boxShadow: {
         card: "0 18px 45px -25px rgba(21, 34, 56, 0.28)",

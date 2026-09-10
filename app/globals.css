@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --font-sans: "Inter", system-ui, sans-serif;
-    --font-script: "Caveat", cursive;
+    --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-script: "Source Serif 4", Georgia, "Times New Roman", serif;
   }
 
   html {
@@ -55,12 +55,12 @@
   }
 
   .script-accent {
-    @apply font-script font-medium text-gold-500;
-    line-height: 0.9;
+    @apply font-script font-semibold italic text-gold-500;
+    line-height: 1;
   }
 
   .rotated-note {
-    @apply pointer-events-none absolute hidden select-none font-script text-xl leading-tight text-navy-300 xl:block;
+    @apply pointer-events-none absolute hidden select-none font-script text-lg italic leading-tight text-navy-300 xl:block;
     writing-mode: vertical-rl;
   }
 

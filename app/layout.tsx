@@ -1,19 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Caveat } from "next/font/google";
+import { IBM_Plex_Sans, Source_Serif_4 } from "next/font/google";
 import { LanguageProvider } from "@/components/providers/LanguageProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
-const inter = Inter({
+const sans = IBM_Plex_Sans({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-sans",
 });
 
-const caveat = Caveat({
+// Serif used for display accents and editorial notes (replaces the former script face).
+const display = Source_Serif_4({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
   display: "swap",
   variable: "--font-script",
 });
@@ -67,7 +70,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={`${inter.variable} ${caveat.variable}`}>
+    <html lang="fr" className={`${sans.variable} ${display.variable}`}>
       <body className="min-h-screen bg-cream font-sans text-ink antialiased">
         <a
           href="#contenu"

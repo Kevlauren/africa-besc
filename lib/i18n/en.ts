@@ -24,7 +24,7 @@ export const en: Dictionary = {
       "We support exporters, freight forwarders and companies in obtaining their ECTN/BESC certificates for shipments to Africa.",
     primaryCta: "Request my ECTN",
     secondaryCta: "Explore our services",
-    note: "Receive your certificate by email or WhatsApp within 24 hours of payment.",
+    // note: "Receive your certificate by email or WhatsApp within 24 hours of payment.",
     badgeValue: "24 h",
     badgeLabel: "Average issuing time",
     imageLabel: "Port · containers · cargo ship",
@@ -33,7 +33,7 @@ export const en: Dictionary = {
   stats: [
     { value: "3,320+", label: "Certificates issued" },
     { value: "150+", label: "Clients supported" },
-    { value: "11", label: "Destinations covered" },
+    { value: "14", label: "Destinations covered" },
     { value: "24/7", label: "Assistance" },
   ],
   services: {
@@ -88,7 +88,7 @@ export const en: Dictionary = {
     selectPlaceholder: "Choose a destination country",
     cta: "See covered countries",
     rotatedNote: "Africa at the heart of our services",
-    mapValue: "11",
+    mapValue: "14",
     mapLabel: "African destinations covered",
     list: [
       { name: "Benin", code: "bj", flag: "🇧🇯" },
@@ -102,6 +102,9 @@ export const en: Dictionary = {
       { name: "South Sudan", code: "ss", flag: "🇸🇸" },
       { name: "Equatorial Guinea", code: "gq", flag: "🇬🇶" },
       { name: "Central African Republic", code: "cf", flag: "🇨🇫" },
+      { name: "Niger", code: "ne", flag: "🇳🇪" },
+      { name: "Burkina Faso", code: "bf", flag: "🇧🇫" },
+      { name: "Mali", code: "ml", flag: "🇲🇱" },
     ],
   },
   why: {
@@ -109,7 +112,7 @@ export const en: Dictionary = {
     title: "Your shipping formalities, without",
     titleAccent: "complications.",
     rotatedNote: "Africa, closer",
-    securedLabel: "Secure payment by bank card",
+    securedLabel: "Bank card, bank transfer or FedaPay",
     items: [
       {
         icon: "zap",
@@ -130,7 +133,8 @@ export const en: Dictionary = {
       {
         icon: "shield-check",
         title: "Secure payment",
-        description: "Secure payment by bank card.",
+        description:
+          "Pay securely by bank card, bank transfer or FedaPay.",
       },
     ],
   },
@@ -247,7 +251,7 @@ export const en: Dictionary = {
     title: "Let's talk about your",
     titleAccent: "shipment",
     subtitle:
-      "A question about ECTN, BESC or CTN, a quote, an ongoing file? Write to us — our team replies within 24 business hours.",
+      "A question about ECTN, BESC or CTN, a quote, an ongoing file? Write to us. Our team replies within 24 business hours.",
     form: {
       lastName: "Last name",
       firstName: "First name",
@@ -278,7 +282,7 @@ export const en: Dictionary = {
       phoneLabel: "Phone",
       addressLabel: "Address",
       hoursLabel: "Availability",
-      hoursValue: "24/7 — reply within 24 business hours",
+      hoursValue: "24/7, reply within 24 business hours",
     },
   },
   quote: {
@@ -286,7 +290,6 @@ export const en: Dictionary = {
     metaTitle: "Transit quote request",
     metaDescription:
       "Get a transit quote for your imports to Africa: ocean, air, road and customs clearance. Detailed reply within 24 to 48 hours.",
-    formUrl: "https://form.jotform.com/VOTRE-ID-JOTFORM",
     hero: {
       label: "Transit quotation",
       chips: ["Fast reply", "Personal support", "Reliable service"],
@@ -384,8 +387,161 @@ export const en: Dictionary = {
       subtitle:
         "One form, one priced answer. No commitment required.",
       primaryCta: "Get an import request",
-      note: "You will be redirected to our secure form.",
+      note: "A secure form, hosted on our own platform.",
       imageAlt: "Stacked containers in a terminal, ready to ship",
+    },
+    form: {
+      label: "Quote request",
+      title: "Tell us about your import",
+      titleAccent: "transit needs.",
+      subtitle:
+        "Enter the origin, destination and details of your goods. We come back with a detailed quote within 24 to 48 hours.",
+      sections: {
+        contact: "Your details",
+        route: "Origin and destination",
+        cargo: "Goods and transport",
+        options: "Additional services",
+        details: "More information",
+        documents: "Documents (optional)",
+      },
+      fields: {
+        firstName: "First name",
+        lastName: "Last name",
+        companyName: "Company",
+        email: "Email",
+        phone: "Phone or WhatsApp",
+        phoneHint: "Include the country code.",
+        originCountry: "Country of origin",
+        originCity: "Port or city of departure",
+        originCityPlaceholder: "e.g. Shanghai, Antwerp, Jebel Ali",
+        destinationCountry: "Destination country",
+        destinationCity: "Port or city of delivery",
+        destinationCityPlaceholder: "e.g. Cotonou, Lomé, Bamako",
+        transportMode: "Preferred transport mode",
+        incoterms: "Incoterms",
+        goodsNature: "Nature of the goods",
+        goodsNaturePlaceholder: "e.g. automotive spare parts, packaged rice",
+        grossWeight: "Total gross weight (kg)",
+        volume: "Volume (m³)",
+        containerType: "Container type (if FCL)",
+        goodsValue: "Value of the goods",
+        currency: "Currency",
+        readyDate: "Preferred pickup date",
+        message: "Additional information",
+        messagePlaceholder:
+          "Deadline constraints, dangerous goods, number of packages, etc.",
+        optionalSuffix: "(optional)",
+      },
+      options: {
+        cargoInsurance: "I would like cargo insurance",
+        customsClearance: "I would like customs clearance on arrival",
+      },
+      files: {
+        proformaInvoice: "Proforma invoice",
+        packingList: "Packing list",
+        hint: "PDF, JPG, PNG or WEBP. 5 MB max per file.",
+      },
+      selectPlaceholder: "Select…",
+      consent:
+        "I authorise Africa BESC to use this information to prepare my transit quote.",
+      submit: "Request my quote",
+      sending: "Sending…",
+      successTitle: "Request sent",
+      successBody:
+        "Thank you! Your quote request has been sent. Our team will get back to you within 24 to 48 hours.",
+      another: "Send another request",
+      errorTitle: "Sending failed",
+      errorBody:
+        "Something went wrong. Try again in a moment or email us directly at",
+      errors: {
+        required: "This field is required.",
+        invalidEmail: "Enter a valid email address.",
+        fileTooLarge: "File too large (5 MB max per file).",
+        fileType: "Unsupported format: use a PDF or an image.",
+        totalTooLarge: "The total size of the documents exceeds 10 MB.",
+        consentRequired: "You must tick this box to continue.",
+      },
+    },
+  },
+  demande: {
+    metaTitle: "ECTN / BESC request",
+    metaDescription:
+      "Submit your ECTN / BESC request online: cargo route, shipment details and supporting documents. Processed within 24 to 72 hours.",
+    label: "Online request",
+    title: "Your ECTN / BESC request,",
+    titleAccent: "in a single step.",
+    subtitle:
+      "Enter your cargo route, the shipment details and attach your documents. Our team processes your file and gets back to you within 24 to 72 hours.",
+    checklistTitle: "Have these ready before you start",
+    checklist: [
+      "The Bill of Lading and its number",
+      "The commercial invoice for the goods",
+      "The export declaration",
+      "The packing list",
+      "The freight invoice",
+      "Vehicle gray cards if the shipment contains cars",
+    ],
+    sections: {
+      route: "Cargo route",
+      applicant: "Applicant",
+      shipment: "Shipment details",
+      documents: "Supporting documents",
+      signature: "Signature and declaration",
+    },
+    fields: {
+      countryOfLoading: "Country of loading",
+      destinationCountry: "Destination country",
+      destinationHint:
+        "The destination country may also be one of the vessel's transit stops.",
+      firstName: "First name",
+      lastName: "Last name",
+      companyName: "Company",
+      email: "Email",
+      phone: "Phone or WhatsApp",
+      phoneHint: "Enter a valid number, including the country code.",
+      blNumber: "Bill of lading number",
+      blNumberHint: "Exactly as shown on the Bill of Lading.",
+      currency: "Currency of goods",
+      freightPayment: "Freight payment type",
+      incoterms: "Incoterms",
+      optionalSuffix: "(optional)",
+    },
+    selectPlaceholder: "Select…",
+    files: {
+      blDocument: "Bill of Lading",
+      commercialInvoice: "Commercial invoice for the goods",
+      exportDeclaration: "Export declaration",
+      packingList: "Packing list",
+      freightInvoice: "Freight invoice",
+      grayCards: "Vehicle gray cards",
+      grayCardsHint: "Attach if your shipment contains vehicles.",
+      hint: "Accepted formats: PDF, JPG, PNG or WEBP. 5 MB max per file, 12 MB in total.",
+    },
+    signature: {
+      label: "Sign in the box below",
+      hint: "Use your mouse or finger to sign.",
+      clear: "Clear",
+    },
+    consent:
+      "I certify that the information and documents provided are accurate, and I authorise Africa BESC to use them to process my ECTN / BESC request.",
+    submit: "Send my request",
+    sending: "Sending…",
+    successTitle: "Request sent",
+    successBody:
+      "Thank you! Your ECTN / BESC request and documents have been sent. Our team will get back to you within 24 to 72 hours.",
+    another: "Send another request",
+    errorTitle: "Sending failed",
+    errorBody:
+      "Something went wrong. Try again in a moment or email us directly at",
+    errors: {
+      required: "This field is required.",
+      invalidEmail: "Enter a valid email address.",
+      fileRequired: "This document is required.",
+      fileTooLarge: "File too large (5 MB max per document).",
+      fileType: "Unsupported format: use a PDF or an image.",
+      totalTooLarge: "The total size of the documents exceeds 12 MB.",
+      signatureRequired: "Your signature is required.",
+      consentRequired: "You must tick this box to continue.",
     },
   },
   footer: {
@@ -405,6 +561,7 @@ export const en: Dictionary = {
       {
         title: "Our services",
         links: [
+          { label: "ECTN/BESC request", href: "/demande" },
           { label: "ECTN", href: "/#services" },
           { label: "BESC", href: "/#services" },
           { label: "CTN", href: "/#services" },
@@ -417,7 +574,7 @@ export const en: Dictionary = {
       title: "Contact",
       email: "info@africa-besc.com",
       phone: "+229 01 23 45 67",
-      lines: ["Cotonou, Bénin", "Sainte Anne la mer, France"],
+      lines: ["Sainte Anne la mer, France"],
     },
     legal: "© 2026 Africa BESC. All rights reserved.",
   },

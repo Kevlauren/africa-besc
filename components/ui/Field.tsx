@@ -1,5 +1,6 @@
 import { forwardRef, useId } from "react";
 import { cn } from "@/lib/cn";
+import { Icon } from "./Icon";
 
 interface BaseProps {
   label: string;
@@ -68,6 +69,92 @@ export const TextField = forwardRef<HTMLInputElement, InputProps>(
           aria-describedby={describedByFor(fieldId, error, hint)}
           className={cn(
             controlBase,
+            error
+              ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+              : "border-cream-300",
+            className,
+          )}
+          {...rest}
+        />
+      </Frame>
+    );
+  },
+);
+
+type SelectOption = { value: string; label: string };
+
+type SelectProps = BaseProps &
+  Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "className" | "children"> & {
+    options: SelectOption[];
+    placeholder?: string;
+  };
+
+export const SelectField = forwardRef<HTMLSelectElement, SelectProps>(
+  function SelectField(
+    { label, error, hint, className, id, options, placeholder, value, ...rest },
+    ref,
+  ) {
+    const generated = useId();
+    const fieldId = id ?? generated;
+    return (
+      <Frame id={fieldId} label={label} error={error} hint={hint}>
+        <div className="relative">
+          <select
+            ref={ref}
+            id={fieldId}
+            value={value}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={describedByFor(fieldId, error, hint)}
+            className={cn(
+              controlBase,
+              "cursor-pointer appearance-none pr-11",
+              value ? "" : "text-navy-300",
+              error
+                ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                : "border-cream-300",
+              className,
+            )}
+            {...rest}
+          >
+            {placeholder ? (
+              <option value="" disabled>
+                {placeholder}
+              </option>
+            ) : null}
+            {options.map((opt) => (
+              <option key={opt.value} value={opt.value} className="text-navy-700">
+                {opt.label}
+              </option>
+            ))}
+          </select>
+          <Icon
+            name="chevron-down"
+            size={18}
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-navy-400"
+          />
+        </div>
+      </Frame>
+    );
+  },
+);
+
+type FileProps = BaseProps &
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, "className" | "type">;
+
+export const FileField = forwardRef<HTMLInputElement, FileProps>(
+  function FileField({ label, error, hint, className, id, ...rest }, ref) {
+    const generated = useId();
+    const fieldId = id ?? generated;
+    return (
+      <Frame id={fieldId} label={label} error={error} hint={hint}>
+        <input
+          ref={ref}
+          id={fieldId}
+          type="file"
+          aria-invalid={error ? true : undefined}
+          aria-describedby={describedByFor(fieldId, error, hint)}
+          className={cn(
+            "w-full rounded-2xl border bg-white text-sm text-navy-600 shadow-sm outline-none transition file:mr-4 file:cursor-pointer file:border-0 file:bg-navy-700 file:px-4 file:py-3 file:text-sm file:font-semibold file:text-white hover:file:bg-navy-600 focus:border-gold-300 focus:ring-4 focus:ring-gold-100",
             error
               ? "border-red-300 focus:border-red-400 focus:ring-red-100"
               : "border-cream-300",

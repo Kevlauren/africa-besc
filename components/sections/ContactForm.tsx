@@ -22,7 +22,7 @@ const EMPTY: Values = {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ContactForm() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const c = t.contact.form;
   const email = t.footer.contact.email;
 
@@ -67,7 +67,7 @@ export function ContactForm() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, company }),
+        body: JSON.stringify({ ...values, company, lang }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setStatus("success");

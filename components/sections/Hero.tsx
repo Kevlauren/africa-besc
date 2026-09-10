@@ -82,7 +82,7 @@ export function Hero({ content }: { content: HeroContent }) {
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Button href="/contact" size="lg" icon="arrow-right">
+            <Button href="/demande" size="lg" icon="arrow-right">
               {content.primaryCta}
             </Button>
             <Button href="/#services" size="lg" variant="outline">
@@ -90,12 +90,12 @@ export function Hero({ content }: { content: HeroContent }) {
             </Button>
           </div>
 
-          <div className="mt-2 flex items-start gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90 shadow-lg backdrop-blur-md">
+          {/* <div className="mt-2 flex items-start gap-3 rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-sm text-white/90 shadow-lg backdrop-blur-md">
             <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-gold-300">
               <Icon name="clock" size={18} />
             </span>
             <p className="leading-snug">{content.note}</p>
-          </div>
+          </div> */}
         </Reveal>
       </Container>
 

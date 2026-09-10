@@ -51,3 +51,6 @@ SVG optimisés, nommés par code ISO 3166-1 alpha-2 :
 | `flags/ss.svg` | Soudan du Sud |
 | `flags/gq.svg` | Guinée équatoriale |
 | `flags/cf.svg` | République centrafricaine |
+| `flags/ne.svg` | Niger |
+| `flags/bf.svg` | Burkina Faso |
+| `flags/ml.svg` | Mali |

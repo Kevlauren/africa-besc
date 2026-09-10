@@ -75,7 +75,7 @@ export function Header() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <LanguageSwitcher tone={overHero ? "dark" : "light"} />
-          <Button href="/contact" size="sm" icon="arrow-right">
+          <Button href="/demande" size="sm" icon="arrow-right">
             {t.nav.cta}
           </Button>
         </div>
@@ -144,7 +144,7 @@ export function Header() {
           <div className="mt-auto flex flex-col gap-4">
             <LanguageSwitcher tone="light" className="self-start" />
             <Button
-              href="/contact"
+              href="/demande"
               className="w-full"
               icon="arrow-right"
               onClick={() => setMenuOpen(false)}

@@ -53,7 +53,7 @@ export function CtaBanner({ content }: { content: CtaBannerContent }) {
               {content.subtitle}
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button href="/contact" size="lg" icon="arrow-right">
+              <Button href="/demande" size="lg" icon="arrow-right">
                 {content.primaryCta}
               </Button>
               <Button
@@ -71,7 +71,7 @@ export function CtaBanner({ content }: { content: CtaBannerContent }) {
 
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute -right-2 top-1/2 z-10 hidden -translate-y-1/2 select-none font-script text-xl text-white/25 xl:block"
+            className="pointer-events-none absolute -right-2 top-1/2 z-10 hidden -translate-y-1/2 select-none font-script text-lg italic text-white/25 xl:block"
             style={{ writingMode: "vertical-rl" }}
           >
             {content.rotatedNote}

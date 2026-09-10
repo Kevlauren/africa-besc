@@ -20,8 +20,9 @@ npm run start    # sert le build
 npm run lint     # ESLint (next/core-web-vitals)
 ```
 
-> Le premier build télécharge les polices Google (`Inter`, `Caveat`) via
-> `next/font`. Une connexion réseau est nécessaire pour `build` / `dev`.
+> Le premier build télécharge les polices Google (`IBM Plex Sans` pour le corps,
+> `Source Serif 4` pour les accents et notes) via `next/font`. Une connexion
+> réseau est nécessaire pour `build` / `dev`.
 
 ## Architecture
 
@@ -30,8 +31,11 @@ app/
   layout.tsx        SEO/OpenGraph, polices, <LanguageProvider>, <Header/> + <Footer/>
   page.tsx          Accueil -> <HomePage />
   contact/page.tsx  Page /contact -> <Contact /> (formulaire)
-  cotation/page.tsx Page /cotation -> <Quote /> (présentation cotation transit)
-  api/contact/route.ts  Route POST : valide le formulaire (TODO: envoi réel)
+  cotation/page.tsx Page /cotation -> <Quote /> (présentation + formulaire de cotation)
+  demande/page.tsx  Page /demande -> <Demande /> (formulaire ECTN/BESC)
+  api/contact/route.ts   Route POST : valide + envoie le message par Resend
+  api/demande/route.ts   Route POST : valide + envoie la demande ECTN/BESC (pièces jointes) par Resend
+  api/cotation/route.ts  Route POST : valide + envoie la demande de cotation import par Resend
   globals.css       Directives Tailwind + classes utilitaires (.eyebrow, .card-surface…)
   icon.svg          Favicon
 
@@ -47,17 +51,19 @@ components/
   sections/
     Hero.tsx  StatsBar.tsx  Services.tsx  ServiceCard.tsx
     CountriesCovered.tsx  WhyUs.tsx  CtaBanner.tsx
-    Testimonials.tsx  Faq.tsx
+    Testimonials.tsx  Faq.tsx  Contact.tsx  ContactForm.tsx
+    Quote.tsx  CotationForm.tsx  Demande.tsx  DemandeForm.tsx
   africa/
     AfricaMap.tsx            Carte SVG interactive des pays couverts
   ui/
     Button.tsx  Container.tsx  Icon.tsx  SectionHeading.tsx  SectionLabel.tsx
     RotatedNote.tsx  ImageSlot.tsx  Accordion.tsx  Carousel.tsx
-    Reveal.tsx  PaymentBadges.tsx
+    Reveal.tsx  PaymentBadges.tsx  Field.tsx  SignaturePad.tsx
 
 lib/
   types.ts          Types du dictionnaire de contenu
   cn.ts             Helper classNames
+  formOptions.ts    Listes déroulantes du formulaire /demande (pays, devises, Incoterms…)
   i18n/
     fr.ts  en.ts    Contenu intégral (FR = langue par défaut)
     index.ts
@@ -87,22 +93,61 @@ hauteur (`h-8`→`h-10` header, `h-10`→`h-11` footer) et met `width:auto`
 ### Page Cotation transit
 
 `/cotation` (`app/cotation/page.tsx` → `components/sections/Quote.tsx`) : présente
-le service de demande de cotation de transit (hero image + dégradé, « Le service »,
-modes couverts, étapes, bannière CTA), même direction design que l'accueil.
+le service de cotation de transit (hero, « Le service », modes couverts, étapes,
+bannière CTA), puis un **formulaire de demande de cotation import** natif
+(`components/sections/CotationForm.tsx`, section `#formulaire`).
 
-Le bouton **« Obtenir une demande d'import »** (2 emplacements : hero + bannière)
-redirige vers un **JotForm**. Remplacez l'URL dans `lib/i18n/fr.ts` **et**
-`en.ts` → `quote.formUrl` (`https://form.jotform.com/VOTRE-ID-JOTFORM`).
+Les CTA de la page pointent vers `#formulaire`. Champs : coordonnées, origine
+(pays + port/ville), destination (pays couvert + port/ville), mode de transport,
+Incoterms, nature/poids/volume de la marchandise, type de conteneur, valeur +
+devise, date d'enlèvement, assurance cargo, dédouanement, message, et 2 documents
+facultatifs (facture proforma, liste de colisage). Options dans `lib/formOptions.ts`
+(`TRANSPORT_MODES`, `CONTAINER_TYPES`).
+
+POST `multipart/form-data` vers `app/api/cotation/route.ts` : validation, honeypot,
+envoi par **Resend** vers `ECTN_INBOX` (mêmes variables que `/demande`),
+`replyTo` = e-mail du demandeur, sujet `Nouvelle demande de cotation import — …`.
+
+### Page Demande ECTN/BESC
+
+`/demande` (`app/demande/page.tsx` → `components/sections/Demande.tsx` →
+`components/sections/DemandeForm.tsx`) : formulaire natif de demande d'ECTN/BESC.
+
+- **Champs** : pays de chargement, pays de destination, prénom, nom, société
+  (facultatif), e-mail, téléphone/WhatsApp, n° de BL, devise, type de paiement du
+  fret, Incoterms. Listes déroulantes dans `lib/formOptions.ts` (bilingues).
+- **Documents** (PDF/JPG/PNG/WEBP, 5 Mo/fichier, 12 Mo au total) : connaissement,
+  facture commerciale, déclaration d'export, liste de colisage, facture de fret,
+  cartes grises (facultatif si véhicules).
+- **Signature** : `components/ui/SignaturePad.tsx` (canvas → PNG).
+- POST `multipart/form-data` vers `app/api/demande/route.ts` : validation,
+  honeypot, puis envoi par **Resend** vers `ECTN_INBOX` avec les documents et la
+  signature en pièces jointes, `replyTo` = e-mail du demandeur.
+
+**Configuration** (voir `.env.example`) :
+
+| Variable | Rôle |
+|---|---|
+| `RESEND_API_KEY` | Clé API Resend. Absente → l'API renvoie `email_not_configured` (503) et rien n'est envoyé. |
+| `ECTN_INBOX` | Destinataire des demandes. Défaut : `info@beninbesc.com`. |
+| `RESEND_FROM` | Expéditeur (domaine vérifié Resend ; `onboarding@resend.dev` pour un test). |
+
+> Hébergement : l'envoi transite par la route API avec les fichiers en pièces
+> jointes. Sur Vercel (serverless/hobby) le corps de requête est plafonné à
+> ~4,5 Mo ; déployez sur une cible qui accepte des corps plus lourds, ou passez
+> plus tard à un upload direct (stockage + liens dans l'e-mail).
 
 ### Page Contact
 
 `/contact` (`app/contact/page.tsx` → `components/sections/Contact.tsx`) : titre +
 coordonnées + formulaire **Nom · Prénoms · E-mail · Sujet · Message**
 (`components/sections/ContactForm.tsx`, validation + états d'envoi + honeypot).
-Accès : lien « Contact » du header et bouton « Nous contacter » de la FAQ (plus
-les CTA du hero / de la bannière). Le formulaire POST vers `app/api/contact/route.ts`
-qui valide et renvoie 200 — **branchez l'envoi réel** (e-mail / CRM) à l'endroit
-marqué `TODO` dans ce fichier.
+Accès : lien « Contact » du header et bouton « Nous contacter » de la FAQ. Le
+formulaire POST (JSON) vers `app/api/contact/route.ts` : validation, honeypot,
+puis envoi par **Resend** vers `ECTN_INBOX` (même boîte que les demandes ECTN),
+`replyTo` = e-mail de l'expéditeur, sujet `Nouveau message de contact — …`.
+Mêmes variables d'environnement que `/demande` (`RESEND_API_KEY`, `ECTN_INBOX`,
+`RESEND_FROM` ; sans clé → 503 `email_not_configured`).
 
 ### Médias du domaine
 

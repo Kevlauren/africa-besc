@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { ImageSlot } from "@/components/ui/ImageSlot";
 import { Reveal } from "@/components/ui/Reveal";
+import { CotationForm } from "./CotationForm";
 import type { IconName } from "@/lib/types";
 
 const CHIP_ICONS: IconName[] = ["shield-check", "headset", "check"];
@@ -47,7 +48,7 @@ export function Quote() {
               </p>
 
               <Button
-                href={q.formUrl}
+                href="#formulaire"
                 size="lg"
                 icon="arrow-right"
                 className="mt-1"
@@ -76,7 +77,7 @@ export function Quote() {
             <Reveal delay={120} className="relative">
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute -top-4 right-2 z-10 hidden max-w-[9rem] -rotate-3 text-right font-script text-xl leading-tight text-navy-400 sm:block lg:-top-7 lg:text-2xl"
+                className="pointer-events-none absolute -top-4 right-2 z-10 hidden max-w-[9rem] -rotate-3 text-right font-script text-lg italic leading-tight text-navy-400 sm:block lg:-top-7 lg:text-xl"
               >
                 {q.hero.imageNote}
               </span>
@@ -253,12 +254,30 @@ export function Quote() {
               <p className="text-base text-white/75 sm:text-lg">
                 {q.cta.subtitle}
               </p>
-              <Button href={q.formUrl} size="lg" icon="arrow-right">
+              <Button href="#formulaire" size="lg" icon="arrow-right">
                 {q.cta.primaryCta}
               </Button>
               <p className="text-sm text-white/55">{q.cta.note}</p>
             </div>
           </Reveal>
+        </Container>
+      </section>
+
+      {/* Quote request form */}
+      <section id="formulaire" className="section bg-cream-200">
+        <Container>
+          <Reveal className="mx-auto max-w-3xl">
+            <SectionHeading
+              align="left"
+              label={q.form.label}
+              title={q.form.title}
+              accent={q.form.titleAccent}
+              description={q.form.subtitle}
+            />
+          </Reveal>
+          <div className="mt-10 sm:mt-12">
+            <CotationForm />
+          </div>
         </Container>
       </section>
     </>

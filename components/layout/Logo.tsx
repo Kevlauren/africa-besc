@@ -92,7 +92,7 @@ export function LogoMark({ tone = "dark" }: { tone?: "light" | "dark" }) {
       <text
         x="52"
         y="24"
-        fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
+        fontFamily='var(--font-sans), "IBM Plex Sans", system-ui, sans-serif'
         fontSize="18"
         fontWeight="800"
         letterSpacing="0.4"
@@ -103,7 +103,7 @@ export function LogoMark({ tone = "dark" }: { tone?: "light" | "dark" }) {
       <text
         x="52.5"
         y="38"
-        fontFamily="var(--font-sans), Inter, system-ui, sans-serif"
+        fontFamily='var(--font-sans), "IBM Plex Sans", system-ui, sans-serif'
         fontSize="7.5"
         fontWeight="600"
         letterSpacing="2.6"
