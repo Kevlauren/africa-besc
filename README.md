@@ -99,10 +99,10 @@ bannière CTA), puis un **formulaire de demande de cotation import** natif
 
 Les CTA de la page pointent vers `#formulaire`. Champs : coordonnées, origine
 (pays + port/ville), destination (pays couvert + port/ville), mode de transport,
-Incoterms, nature/poids/volume de la marchandise, type de conteneur, valeur +
-devise, date d'enlèvement, assurance cargo, dédouanement, message, et 2 documents
-facultatifs (facture proforma, liste de colisage). Options dans `lib/formOptions.ts`
-(`TRANSPORT_MODES`, `CONTAINER_TYPES`).
+Incoterms, code SH (HS Code), assurance cargo, dédouanement, message, et
+**4 documents obligatoires** : connaissement (Bill of Lading), facture
+commerciale finale, liste de colisage, facture de fret. Mode de transport dans
+`lib/formOptions.ts` (`TRANSPORT_MODES`).
 
 POST `multipart/form-data` vers `app/api/cotation/route.ts` : validation, honeypot,
 envoi par **Resend** vers `ECTN_INBOX` (mêmes variables que `/demande`),

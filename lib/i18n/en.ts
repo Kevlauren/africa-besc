@@ -41,32 +41,32 @@ export const en: Dictionary = {
     title: "Simplify your shipping formalities to",
     titleAccent: "Africa",
     subtitle:
-      "Africa BESC supports exporters, freight forwarders and companies for shipments to several African destinations.",
+      "Africa BESC assists exporters, freight forwarders, and companies in obtaining their BESC/ECTN certificates and in completing transit formalities for shipments to various African destinations.",
     rotatedNote: "More than a document, a trusted partner",
     learnMore: "Learn more",
     items: [
       {
         icon: "file-text",
-        title: "ECTN",
-        subtitle: "Electronic Cargo Tracking Note",
+        title: "ECTN/BESC",
+        subtitle: "For the traceability of your goods",
         description:
-          "A mandatory document in several African countries that enables electronic cargo tracking and secures goods in transit.",
+          "A mandatory document in several African countries that enables electronic tracking of shipments and ensures the security of goods.",
         image: "/images/services/ectn-document.jpg",
       },
       {
         icon: "package",
-        title: "BESC",
-        subtitle: "Electronic Cargo Tracking Slip",
+        title: "CTN / BESC",
+        subtitle: "Depending on the destination",
         description:
-          "The BESC is required by certain African countries for the traceability of goods at destination.",
+          "Depending on the country, the document may be called a CTN or a BESC. We’ll help you identify the correct procedure based on your destination.",
         image: "/images/services/besc-containers.jpg",
       },
       {
         icon: "compass",
-        title: "CTN / BESC",
-        subtitle: "Depending on the destination",
+        title: "Transit Quote",
+        subtitle: "Clear import formalities",
         description:
-          "Depending on the country, the document may be called CTN or BESC. We help you identify the right procedure for your destination.",
+          "Quickly receive a personalized estimate of your transit and shipping costs to your final destination.",
         image: "/images/services/ctn-world-map.jpg",
       },
       {
@@ -251,7 +251,7 @@ export const en: Dictionary = {
     title: "Let's talk about your",
     titleAccent: "shipment",
     subtitle:
-      "A question about ECTN, BESC or CTN, a quote, an ongoing file? Write to us. Our team replies within 24 business hours.",
+      "Do you have a question about the ECTN/BESC or the CTN, need a quote, have an ongoing case, or require assistance with your shipments? Write to us: our team will respond within 30 minutes.",
     form: {
       lastName: "Last name",
       firstName: "First name",
@@ -296,7 +296,7 @@ export const en: Dictionary = {
       title: "Your imports,",
       titleAccent: "made clear.",
       subtitle:
-        "Get a fast, reliable transit quote tailored to your needs. We support you from pickup to delivery, across Africa.",
+        "Get a quick, personalized estimate of your transit and shipping costs to your final destination.",
       primaryCta: "Get an import request",
       secondaryCta: "Talk to an advisor",
       imageAlt:
@@ -392,17 +392,17 @@ export const en: Dictionary = {
     },
     form: {
       label: "Quote request",
-      title: "Tell us about your import",
-      titleAccent: "transit needs.",
+      title: "Get a quote",
+      titleAccent: "for customs formalities at the port of arrival.",
       subtitle:
-        "Enter the origin, destination and details of your goods. We come back with a detailed quote within 24 to 48 hours.",
+        "Provide the destination port and the details of your cargo to receive an approximate estimate within 24 to 48 hours.",
       sections: {
         contact: "Your details",
         route: "Origin and destination",
         cargo: "Goods and transport",
         options: "Additional services",
         details: "More information",
-        documents: "Documents (optional)",
+        documents: "Required documents",
       },
       fields: {
         firstName: "First name",
@@ -419,14 +419,9 @@ export const en: Dictionary = {
         destinationCityPlaceholder: "e.g. Cotonou, Lomé, Bamako",
         transportMode: "Preferred transport mode",
         incoterms: "Incoterms",
-        goodsNature: "Nature of the goods",
-        goodsNaturePlaceholder: "e.g. automotive spare parts, packaged rice",
-        grossWeight: "Total gross weight (kg)",
-        volume: "Volume (m³)",
-        containerType: "Container type (if FCL)",
-        goodsValue: "Value of the goods",
-        currency: "Currency",
-        readyDate: "Preferred pickup date",
+        hsCode: "HS Code (tariff heading)",
+        hsCodeHint:
+          "6, 8 or 10-digit customs code: it determines the taxation, regulation and customs duties that apply.",
         message: "Additional information",
         messagePlaceholder:
           "Deadline constraints, dangerous goods, number of packages, etc.",
@@ -437,8 +432,12 @@ export const en: Dictionary = {
         customsClearance: "I would like customs clearance on arrival",
       },
       files: {
-        proformaInvoice: "Proforma invoice",
+        billOfLading: "Bill of Lading (B/L)",
+        commercialInvoice: "Final commercial invoice",
         packingList: "Packing list",
+        freightInvoice: "Freight invoice",
+        freightInvoiceHint:
+          "If freight is not included in the commercial invoice (FOB sales).",
         hint: "PDF, JPG, PNG or WEBP. 5 MB max per file.",
       },
       selectPlaceholder: "Select…",
@@ -456,9 +455,10 @@ export const en: Dictionary = {
       errors: {
         required: "This field is required.",
         invalidEmail: "Enter a valid email address.",
+        fileRequired: "This document is required.",
         fileTooLarge: "File too large (5 MB max per file).",
         fileType: "Unsupported format: use a PDF or an image.",
-        totalTooLarge: "The total size of the documents exceeds 10 MB.",
+        totalTooLarge: "The total size of the documents exceeds 15 MB.",
         consentRequired: "You must tick this box to continue.",
       },
     },

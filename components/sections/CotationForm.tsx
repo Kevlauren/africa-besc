@@ -14,14 +14,12 @@ import {
   LOADING_COUNTRIES,
   DESTINATION_COUNTRIES,
   TRANSPORT_MODES,
-  CONTAINER_TYPES,
   INCOTERMS,
-  CURRENCIES,
   localizeOptions,
 } from "@/lib/formOptions";
 
 const MAX_FILE_MB = 5;
-const MAX_TOTAL_MB = 10;
+const MAX_TOTAL_MB = 15;
 const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024;
 const MAX_TOTAL_BYTES = MAX_TOTAL_MB * 1024 * 1024;
 const ACCEPT = ".pdf,.jpg,.jpeg,.png,.webp";
@@ -40,16 +38,14 @@ type TextName =
   | "destinationCity"
   | "transportMode"
   | "incoterms"
-  | "goodsNature"
-  | "grossWeight"
-  | "volume"
-  | "containerType"
-  | "goodsValue"
-  | "currency"
-  | "readyDate"
+  | "hsCode"
   | "message";
 
-type FileName = "proformaInvoice" | "packingList";
+type FileName =
+  | "billOfLading"
+  | "commercialInvoice"
+  | "packingList"
+  | "freightInvoice";
 
 const TEXT_NAMES: TextName[] = [
   "firstName",
@@ -63,13 +59,7 @@ const TEXT_NAMES: TextName[] = [
   "destinationCity",
   "transportMode",
   "incoterms",
-  "goodsNature",
-  "grossWeight",
-  "volume",
-  "containerType",
-  "goodsValue",
-  "currency",
-  "readyDate",
+  "hsCode",
   "message",
 ];
 
@@ -84,11 +74,15 @@ const REQUIRED_TEXT: TextName[] = [
   "destinationCity",
   "transportMode",
   "incoterms",
-  "goodsNature",
-  "grossWeight",
+  "hsCode",
 ];
 
-const FILE_NAMES: FileName[] = ["proformaInvoice", "packingList"];
+const FILE_NAMES: FileName[] = [
+  "billOfLading",
+  "commercialInvoice",
+  "packingList",
+  "freightInvoice",
+];
 
 const EMPTY_TEXT = Object.fromEntries(
   TEXT_NAMES.map((n) => [n, ""]),
@@ -139,12 +133,7 @@ export function CotationForm() {
     [lang],
   );
   const modeOpts = useMemo(() => localizeOptions(TRANSPORT_MODES, lang), [lang]);
-  const containerOpts = useMemo(
-    () => localizeOptions(CONTAINER_TYPES, lang),
-    [lang],
-  );
   const incotermOpts = useMemo(() => localizeOptions(INCOTERMS, lang), [lang]);
-  const currencyOpts = useMemo(() => localizeOptions(CURRENCIES, lang), [lang]);
 
   const clearError = (name: string) =>
     setErrors((prev) => (prev[name] ? { ...prev, [name]: "" } : prev));
@@ -180,7 +169,10 @@ export function CotationForm() {
     let total = 0;
     FILE_NAMES.forEach((name) => {
       const file = files[name];
-      if (!file) return;
+      if (!file) {
+        next[name] = f.errors.fileRequired;
+        return;
+      }
       const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
       if (!ALLOWED_EXT.includes(ext)) next[name] = f.errors.fileType;
       else if (file.size > MAX_FILE_BYTES) next[name] = f.errors.fileTooLarge;
@@ -387,62 +379,14 @@ export function CotationForm() {
           />
         </div>
         <TextField
-          label={f.fields.goodsNature}
-          name="goodsNature"
-          placeholder={f.fields.goodsNaturePlaceholder}
-          value={values.goodsNature}
-          onChange={setText("goodsNature")}
-          error={errors.goodsNature}
+          label={f.fields.hsCode}
+          name="hsCode"
+          hint={f.fields.hsCodeHint}
+          value={values.hsCode}
+          onChange={setText("hsCode")}
+          error={errors.hsCode}
           required
         />
-        <div className="grid gap-5 sm:grid-cols-2">
-          <TextField
-            label={f.fields.grossWeight}
-            name="grossWeight"
-            inputMode="decimal"
-            value={values.grossWeight}
-            onChange={setText("grossWeight")}
-            error={errors.grossWeight}
-            required
-          />
-          <TextField
-            label={optional(f.fields.volume)}
-            name="volume"
-            inputMode="decimal"
-            value={values.volume}
-            onChange={setText("volume")}
-          />
-          <SelectField
-            label={optional(f.fields.containerType)}
-            name="containerType"
-            options={containerOpts}
-            placeholder={f.selectPlaceholder}
-            value={values.containerType}
-            onChange={setText("containerType")}
-          />
-          <TextField
-            label={optional(f.fields.readyDate)}
-            name="readyDate"
-            type="date"
-            value={values.readyDate}
-            onChange={setText("readyDate")}
-          />
-          <TextField
-            label={optional(f.fields.goodsValue)}
-            name="goodsValue"
-            inputMode="decimal"
-            value={values.goodsValue}
-            onChange={setText("goodsValue")}
-          />
-          <SelectField
-            label={optional(f.fields.currency)}
-            name="currency"
-            options={currencyOpts}
-            placeholder={f.selectPlaceholder}
-            value={values.currency}
-            onChange={setText("currency")}
-          />
-        </div>
       </Fieldset>
 
       <Fieldset title={f.sections.options}>
@@ -483,18 +427,37 @@ export function CotationForm() {
         </p>
         <div className="grid gap-5 sm:grid-cols-2">
           <FileField
-            label={optional(f.files.proformaInvoice)}
-            name="proformaInvoice"
+            label={f.files.billOfLading}
+            name="billOfLading"
             accept={ACCEPT}
-            onChange={setFile("proformaInvoice")}
-            error={errors.proformaInvoice}
+            onChange={setFile("billOfLading")}
+            error={errors.billOfLading}
+            required
           />
           <FileField
-            label={optional(f.files.packingList)}
+            label={f.files.commercialInvoice}
+            name="commercialInvoice"
+            accept={ACCEPT}
+            onChange={setFile("commercialInvoice")}
+            error={errors.commercialInvoice}
+            required
+          />
+          <FileField
+            label={f.files.packingList}
             name="packingList"
             accept={ACCEPT}
             onChange={setFile("packingList")}
             error={errors.packingList}
+            required
+          />
+          <FileField
+            label={f.files.freightInvoice}
+            name="freightInvoice"
+            accept={ACCEPT}
+            hint={f.files.freightInvoiceHint}
+            onChange={setFile("freightInvoice")}
+            error={errors.freightInvoice}
+            required
           />
         </div>
         {errors._total ? (

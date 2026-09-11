@@ -5,21 +5,25 @@ import {
   LOADING_COUNTRIES,
   DESTINATION_COUNTRIES,
   TRANSPORT_MODES,
-  CONTAINER_TYPES,
   INCOTERMS,
-  CURRENCIES,
   labelFor,
   isValidOption,
 } from "@/lib/formOptions";
+import { renderEmail, escapeHtml } from "@/lib/emailLayout";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
-const MAX_TOTAL_BYTES = 10 * 1024 * 1024;
+const MAX_TOTAL_BYTES = 15 * 1024 * 1024;
 const ALLOWED_EXT = new Set(["pdf", "jpg", "jpeg", "png", "webp"]);
-const FILE_FIELDS = ["proformaInvoice", "packingList"] as const;
+const FILE_FIELDS = [
+  "billOfLading",
+  "commercialInvoice",
+  "packingList",
+  "freightInvoice",
+] as const;
 
 const INBOX = process.env.ECTN_INBOX ?? "info@beninbesc.com";
 const FROM = process.env.RESEND_FROM ?? "Africa BESC <onboarding@resend.dev>";
@@ -35,12 +39,7 @@ const LABELS: Record<Lang, Record<string, string>> = {
     destination: "Destination",
     transportMode: "Mode de transport",
     incoterms: "Incoterms",
-    goodsNature: "Nature de la marchandise",
-    grossWeight: "Poids brut (kg)",
-    volume: "Volume (m³)",
-    containerType: "Type de conteneur",
-    goodsValue: "Valeur des marchandises",
-    readyDate: "Date d'enlèvement souhaitée",
+    hsCode: "Code SH / HS Code",
     cargoInsurance: "Assurance cargo",
     customsClearance: "Dédouanement à l'arrivée",
     message: "Informations complémentaires",
@@ -60,12 +59,7 @@ const LABELS: Record<Lang, Record<string, string>> = {
     destination: "Destination",
     transportMode: "Transport mode",
     incoterms: "Incoterms",
-    goodsNature: "Nature of the goods",
-    grossWeight: "Gross weight (kg)",
-    volume: "Volume (m³)",
-    containerType: "Container type",
-    goodsValue: "Value of the goods",
-    readyDate: "Preferred pickup date",
+    hsCode: "HS Code",
     cargoInsurance: "Cargo insurance",
     customsClearance: "Customs clearance on arrival",
     message: "Additional information",
@@ -84,20 +78,6 @@ function ext(name: string): string {
 
 function sanitize(name: string): string {
   return name.replace(/[^\w.\-]+/g, "_").slice(-80) || "fichier";
-}
-
-function escapeHtml(value: string): string {
-  return value.replace(
-    /[&<>"']/g,
-    (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      })[c] as string,
-  );
 }
 
 function isFileLike(v: FormDataEntryValue | null): v is File {
@@ -140,13 +120,7 @@ export async function POST(request: Request) {
     destinationCity: str("destinationCity"),
     transportMode: str("transportMode"),
     incoterms: str("incoterms"),
-    goodsNature: str("goodsNature"),
-    grossWeight: str("grossWeight"),
-    volume: str("volume"),
-    containerType: str("containerType"),
-    goodsValue: str("goodsValue"),
-    currency: str("currency"),
-    readyDate: str("readyDate"),
+    hsCode: str("hsCode"),
     message: str("message"),
   };
 
@@ -161,8 +135,7 @@ export async function POST(request: Request) {
     "destinationCity",
     "transportMode",
     "incoterms",
-    "goodsNature",
-    "grossWeight",
+    "hsCode",
   ];
   const missing = requiredText.filter((k) => !text[k]);
   if (missing.length > 0 || !EMAIL_RE.test(text.email)) {
@@ -176,9 +149,7 @@ export async function POST(request: Request) {
     isValidOption(LOADING_COUNTRIES, text.originCountry) &&
     isValidOption(DESTINATION_COUNTRIES, text.destinationCountry) &&
     isValidOption(TRANSPORT_MODES, text.transportMode) &&
-    isValidOption(INCOTERMS, text.incoterms) &&
-    (!text.containerType || isValidOption(CONTAINER_TYPES, text.containerType)) &&
-    (!text.currency || isValidOption(CURRENCIES, text.currency));
+    isValidOption(INCOTERMS, text.incoterms);
   if (!optionsValid) {
     return NextResponse.json({ error: "validation" }, { status: 422 });
   }
@@ -190,12 +161,14 @@ export async function POST(request: Request) {
   const insurance = str("cargoInsurance") === "true";
   const customs = str("customsClearance") === "true";
 
-  // Optional documents
+  // Required documents
   const attachments: { filename: string; content: Buffer }[] = [];
   let total = 0;
   for (const field of FILE_FIELDS) {
     const entry = form.get(field);
-    if (!isFileLike(entry)) continue;
+    if (!isFileLike(entry)) {
+      return NextResponse.json({ error: "file_missing", field }, { status: 422 });
+    }
     if (!ALLOWED_EXT.has(ext(entry.name))) {
       return NextResponse.json({ error: "file_type", field }, { status: 422 });
     }
@@ -226,22 +199,7 @@ export async function POST(request: Request) {
     [L.destination, destLabel],
     [L.transportMode, labelFor(TRANSPORT_MODES, text.transportMode, lang)],
     [L.incoterms, labelFor(INCOTERMS, text.incoterms, lang)],
-    [L.goodsNature, text.goodsNature],
-    [L.grossWeight, text.grossWeight],
-    [L.volume, text.volume || L.none],
-    [
-      L.containerType,
-      text.containerType
-        ? labelFor(CONTAINER_TYPES, text.containerType, lang)
-        : L.none,
-    ],
-    [
-      L.goodsValue,
-      text.goodsValue
-        ? `${text.goodsValue} ${text.currency ? labelFor(CURRENCIES, text.currency, lang) : ""}`.trim()
-        : L.none,
-    ],
-    [L.readyDate, text.readyDate || L.none],
+    [L.hsCode, text.hsCode],
     [L.cargoInsurance, insurance ? L.yes : L.no],
     [L.customsClearance, customs ? L.yes : L.no],
     [L.message, text.message || L.none],
@@ -253,27 +211,18 @@ export async function POST(request: Request) {
     lang,
   )})`;
 
-  const attachmentsLine = attachments.length
-    ? attachments.map((a) => a.filename).join(", ")
-    : L.none;
+  const attachmentsLine = attachments.map((a) => a.filename).join(", ");
   const textBody =
     rows.map(([k, v]) => `${k}: ${v}`).join("\n") +
     `\n\n${L.attachments}: ${attachmentsLine}`;
 
-  const htmlBody = `<div style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#152238;font-size:14px;line-height:1.5">
-  <h2 style="margin:0 0 12px;font-size:16px">${escapeHtml(subject)}</h2>
-  <table style="border-collapse:collapse">
-    ${rows
-      .map(
-        ([k, v]) =>
-          `<tr><td style="padding:6px 20px 6px 0;color:#40567F;vertical-align:top">${escapeHtml(
-            k,
-          )}</td><td style="padding:6px 0;font-weight:600">${escapeHtml(v)}</td></tr>`,
-      )
-      .join("\n    ")}
-  </table>
-  <p style="margin-top:18px;color:#40567F">${escapeHtml(L.attachments)}: ${escapeHtml(attachmentsLine)}</p>
-</div>`;
+  const htmlBody = renderEmail({
+    title: subject,
+    rows,
+    extraHtml: `<p style="margin-top:18px;color:#40567F">${escapeHtml(
+      L.attachments,
+    )}: ${escapeHtml(attachmentsLine)}</p>`,
+  });
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
@@ -294,7 +243,7 @@ export async function POST(request: Request) {
       subject,
       text: textBody,
       html: htmlBody,
-      attachments: attachments.length ? attachments : undefined,
+      attachments,
     });
     if (error) {
       console.error("[cotation] Erreur Resend:", error);

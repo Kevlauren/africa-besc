@@ -41,7 +41,7 @@ export const fr: Dictionary = {
     title: "Simplifiez vos formalités d'expédition vers",
     titleAccent: "l'Afrique",
     subtitle:
-      "Africa BESC accompagne les exportateurs, transitaires et entreprises pour des expéditions vers plusieurs destinations africaines.",
+      "Africa BESC accompagne les exportateurs, transitaires et entreprises pour l'obtention de leur certificat BESC/ECTN et pour les formalités de transit vers plusieurs destinations africaines.",
     rotatedNote: "",
     learnMore: "En savoir plus",
     items: [
@@ -66,7 +66,7 @@ export const fr: Dictionary = {
         title: "Cotation de transit",
         subtitle: "Formalités d'import en toute clarté",
         description:
-          "Recevez rapidement une estimation personnalisée de vos frais de transit et d'acheminement.",
+          "Recevez rapidement une estimation personnalisée de vos frais de formalités de transit et d'acheminement vers votre destination finale.",
         image: "/images/services/besc-containers.jpg",
       },
       {
@@ -255,7 +255,7 @@ export const fr: Dictionary = {
     title: "Parlons de votre",
     titleAccent: "expédition",
     subtitle:
-      "Une question sur l'ECTN, le BESC ou le CTN, un devis, un dossier en cours ? Écrivez-nous : notre équipe vous répond sous 24 h ouvrées.",
+      "Une question sur l'ECTN / BESC ou le CTN, un devis, un dossier en cours, une assitance pour vos transits ? Écrivez-nous : notre équipe vous répond en moins de 30 minutes.",
     form: {
       lastName: "Nom",
       firstName: "Prénoms",
@@ -301,8 +301,8 @@ export const fr: Dictionary = {
       title: "Demandez votre cotation de transit,",
       titleAccent: "en toute clarté.",
       subtitle:
-        "Recevez rapidement une estimation personnalisée de vos frais de transit et d'acheminement.",
-      primaryCta: "Obtenir une demande d'import",
+        "Recevez rapidement une estimation personnalisée de vos frais de formalités de transit et d'acheminement vers votre destination finale.",
+      primaryCta: "Obtenir une cotation",
       secondaryCta: "Parler à un conseiller",
       imageAlt:
         "Terminal portuaire : porte-conteneurs, grues et agent de transit sur le quai",
@@ -391,23 +391,23 @@ export const fr: Dictionary = {
       titleAccent: "cotation",
       subtitle:
         "Un formulaire, une réponse chiffrée. Aucune obligation d'engagement.",
-      primaryCta: "Obtenir une demande d'import",
+      primaryCta: "Obtenir une cotation",
       note: "Formulaire sécurisé, hébergé sur notre plateforme.",
       imageAlt: "Conteneurs empilés dans un terminal, prêts à l'expédition",
     },
     form: {
       label: "Demande de cotation",
-      title: "Décrivez votre besoin de",
-      titleAccent: "transit import.",
+      title: "Obtenez votre cotation",
+      titleAccent: "pour les formalités au port d'arrivée.",
       subtitle:
-        "Renseignez l'origine, la destination et les caractéristiques de votre marchandise. Nous revenons vers vous avec une cotation détaillée sous 24 à 48 heures.",
+        "Indiquez le port de destination et les spécificités de votre cargaison pour recevoir une estimation approximative sous 24 à 48 heures.",
       sections: {
         contact: "Vos coordonnées",
         route: "Origine et destination",
         cargo: "Marchandise et transport",
         options: "Prestations complémentaires",
         details: "Précisions",
-        documents: "Documents (facultatif)",
+        documents: "Documents obligatoires",
       },
       fields: {
         firstName: "Prénom",
@@ -424,14 +424,9 @@ export const fr: Dictionary = {
         destinationCityPlaceholder: "Ex. Cotonou, Lomé, Bamako",
         transportMode: "Mode de transport souhaité",
         incoterms: "Incoterms",
-        goodsNature: "Nature de la marchandise",
-        goodsNaturePlaceholder: "Ex. pièces détachées automobiles, riz conditionné",
-        grossWeight: "Poids brut total (kg)",
-        volume: "Volume (m³)",
-        containerType: "Type de conteneur (si FCL)",
-        goodsValue: "Valeur des marchandises",
-        currency: "Devise",
-        readyDate: "Date d'enlèvement souhaitée",
+        hsCode: "Code SH / HS Code (position tarifaire)",
+        hsCodeHint:
+          "Code douanier à 6, 8 ou 10 chiffres : il détermine la taxation, la réglementation et les droits de douane applicables.",
         message: "Informations complémentaires",
         messagePlaceholder:
           "Contraintes de délai, marchandise dangereuse, nombre de colis, etc.",
@@ -442,8 +437,12 @@ export const fr: Dictionary = {
         customsClearance: "Je souhaite le dédouanement à l'arrivée",
       },
       files: {
-        proformaInvoice: "Facture proforma",
-        packingList: "Liste de colisage",
+        billOfLading: "Connaissement maritime (Bill of Lading)",
+        commercialInvoice: "Facture commerciale finale",
+        packingList: "Liste de colisage (Packing List)",
+        freightInvoice: "Facture de fret",
+        freightInvoiceHint:
+          "Si le fret n'est pas inclus dans la facture commerciale (vente FOB).",
         hint: "PDF, JPG, PNG ou WEBP. 5 Mo maximum par fichier.",
       },
       selectPlaceholder: "Sélectionner…",
@@ -461,9 +460,10 @@ export const fr: Dictionary = {
       errors: {
         required: "Ce champ est requis.",
         invalidEmail: "Saisissez une adresse e-mail valide.",
+        fileRequired: "Ce document est requis.",
         fileTooLarge: "Fichier trop volumineux (5 Mo maximum par fichier).",
         fileType: "Format non accepté : utilisez un PDF ou une image.",
-        totalTooLarge: "Le poids total des documents dépasse 10 Mo.",
+        totalTooLarge: "Le poids total des documents dépasse 15 Mo.",
         consentRequired: "Vous devez cocher cette case pour continuer.",
       },
     },

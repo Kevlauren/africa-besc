@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import type { Lang } from "@/lib/types";
+import { renderEmail, escapeHtml } from "@/lib/emailLayout";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,20 +22,6 @@ type Payload = {
 };
 
 const str = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-
-function escapeHtml(value: string): string {
-  return value.replace(
-    /[&<>"']/g,
-    (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      })[c] as string,
-  );
-}
 
 const LABELS: Record<Lang, Record<string, string>> = {
   fr: {
@@ -94,21 +81,14 @@ export async function POST(request: Request) {
   const textBody =
     rows.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\n${L.message}:\n${message}`;
 
-  const htmlBody = `<div style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#152238;font-size:14px;line-height:1.5">
-  <h2 style="margin:0 0 12px;font-size:16px">${escapeHtml(fullSubject)}</h2>
-  <table style="border-collapse:collapse">
-    ${rows
-      .map(
-        ([k, v]) =>
-          `<tr><td style="padding:6px 20px 6px 0;color:#40567F;vertical-align:top">${escapeHtml(
-            k,
-          )}</td><td style="padding:6px 0;font-weight:600">${escapeHtml(v)}</td></tr>`,
-      )
-      .join("\n    ")}
-  </table>
-  <p style="margin-top:18px;color:#40567F">${escapeHtml(L.message)}</p>
-  <p style="white-space:pre-wrap;margin-top:4px">${escapeHtml(message)}</p>
-</div>`;
+  const htmlBody = renderEmail({
+    title: fullSubject,
+    rows,
+    extraHtml: `<p style="margin-top:18px;color:#40567F">${escapeHtml(
+      L.message,
+    )}</p>
+  <p style="white-space:pre-wrap;margin-top:4px">${escapeHtml(message)}</p>`,
+  });
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {

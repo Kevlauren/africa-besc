@@ -34,67 +34,84 @@ export function Header() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
   // The header is transparent (light content) only while sitting on top of a
   // page's dark hero. Once scrolled — or anywhere else — it uses the solid theme.
   const overHero = HERO_ROUTES.has(pathname) && !scrolled;
 
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 transition duration-300",
-        overHero
-          ? "border-b border-transparent bg-transparent"
-          : "border-b border-cream-300/80 bg-cream/90 backdrop-blur-md",
-      )}
-    >
-      <Container className="flex h-16 items-center justify-between gap-4 lg:h-20">
-        <Link
-          href="/"
-          aria-label="Africa BESC — accueil"
-          className="shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2"
-        >
-          <Logo tone={overHero ? "light" : "dark"} className="h-8 sm:h-9 lg:h-10" />
-        </Link>
+    <header className="fixed inset-x-0 top-0 z-50">
+      {/*
+        The scroll/hero background + blur live on this inner bar, not on
+        <header> itself: `backdrop-filter` establishes a new containing
+        block, which would size the mobile drawer's `fixed inset-0` panel
+        below to this bar's own height instead of the viewport.
+      */}
+      <div
+        className={cn(
+          "border-b transition duration-300",
+          overHero
+            ? "border-transparent bg-transparent"
+            : "border-cream-300/80 bg-cream/90 backdrop-blur-md",
+        )}
+      >
+        <Container className="flex h-16 items-center justify-between gap-4 lg:h-20">
+          <Link
+            href="/"
+            aria-label="Africa BESC — accueil"
+            className="shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2"
+          >
+            <Logo tone={overHero ? "light" : "dark"} className="h-8 sm:h-9 lg:h-10" />
+          </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
-          {t.nav.links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "rounded-full px-3 py-2 text-sm font-medium transition",
-                overHero
-                  ? "text-white/80 hover:bg-white/10 hover:text-white"
-                  : "text-navy-500 hover:bg-white hover:text-navy-700",
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+          <nav className="hidden items-center gap-1 lg:flex">
+            {t.nav.links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  "rounded-full px-3 py-2 text-sm font-medium transition",
+                  overHero
+                    ? "text-white/80 hover:bg-white/10 hover:text-white"
+                    : "text-navy-500 hover:bg-white hover:text-navy-700",
+                )}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <LanguageSwitcher tone={overHero ? "dark" : "light"} />
-          <Button href="/demande" size="sm" icon="arrow-right">
-            {t.nav.cta}
-          </Button>
-        </div>
+          <div className="hidden items-center gap-3 lg:flex">
+            <LanguageSwitcher tone={overHero ? "dark" : "light"} />
+            <Button href="/demande" size="sm" icon="arrow-right">
+              {t.nav.cta}
+            </Button>
+          </div>
 
-        <button
-          type="button"
-          className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-full border transition lg:hidden",
-            overHero
-              ? "border-white/30 bg-white/10 text-white backdrop-blur"
-              : "border-cream-300 bg-white text-navy-600",
-          )}
-          aria-label={t.nav.menuLabel}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(true)}
-        >
-          <Icon name="menu" size={20} />
-        </button>
-      </Container>
+          <button
+            type="button"
+            className={cn(
+              "flex h-11 w-11 items-center justify-center rounded-full border transition lg:hidden",
+              overHero
+                ? "border-white/30 bg-white/10 text-white backdrop-blur"
+                : "border-cream-300 bg-white text-navy-600",
+            )}
+            aria-label={t.nav.menuLabel}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(true)}
+          >
+            <Icon name="menu" size={20} />
+          </button>
+        </Container>
+      </div>
 
       {/* Mobile drawer */}
       <div
@@ -111,8 +128,11 @@ export function Header() {
           onClick={() => setMenuOpen(false)}
         />
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={t.nav.menuLabel}
           className={cn(
-            "absolute right-0 top-0 flex h-full w-[82%] max-w-sm flex-col gap-6 bg-cream px-6 py-6 shadow-2xl transition-transform duration-300",
+            "absolute right-0 top-0 flex h-full w-[82%] max-w-sm flex-col gap-6 overflow-y-auto overscroll-contain bg-cream px-6 py-6 shadow-2xl transition-transform duration-300",
             menuOpen ? "translate-x-0" : "translate-x-full",
           )}
         >
@@ -120,7 +140,7 @@ export function Header() {
             <Logo tone="dark" className="h-9" />
             <button
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-cream-300 bg-white text-navy-600"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-cream-300 bg-white text-navy-600"
               aria-label="Fermer"
               onClick={() => setMenuOpen(false)}
             >

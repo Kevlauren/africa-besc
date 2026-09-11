@@ -10,6 +10,7 @@ import {
   labelFor,
   isValidOption,
 } from "@/lib/formOptions";
+import { renderEmail, escapeHtml } from "@/lib/emailLayout";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -69,20 +70,6 @@ function ext(name: string): string {
 
 function sanitize(name: string): string {
   return name.replace(/[^\w.\-]+/g, "_").slice(-80) || "fichier";
-}
-
-function escapeHtml(value: string): string {
-  return value.replace(
-    /[&<>"']/g,
-    (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      })[c] as string,
-  );
 }
 
 function isFileLike(v: FormDataEntryValue | null): v is File {
@@ -235,24 +222,15 @@ export async function POST(request: Request) {
     rows.map(([k, v]) => `${k}: ${v}`).join("\n") +
     `\n\n${lang === "en" ? "Attachments" : "Pièces jointes"}: ${attachmentsLine}`;
 
-  const htmlBody = `<div style="font-family:Arial,'Helvetica Neue',Helvetica,sans-serif;color:#152238;font-size:14px;line-height:1.5">
-  <h2 style="margin:0 0 12px;font-size:16px">${escapeHtml(subject)}</h2>
-  <table style="border-collapse:collapse">
-    ${rows
-      .map(
-        ([k, v]) =>
-          `<tr><td style="padding:6px 20px 6px 0;color:#40567F;vertical-align:top">${escapeHtml(
-            k,
-          )}</td><td style="padding:6px 0;font-weight:600">${escapeHtml(v)}</td></tr>`,
-      )
-      .join("\n    ")}
-  </table>
-  <p style="margin-top:18px;color:#40567F">${
-    lang === "en"
-      ? "Documents attached to this email"
-      : "Documents joints à cet e-mail"
-  }: ${escapeHtml(attachmentsLine)}</p>
-</div>`;
+  const htmlBody = renderEmail({
+    title: subject,
+    rows,
+    extraHtml: `<p style="margin-top:18px;color:#40567F">${
+      lang === "en"
+        ? "Documents attached to this email"
+        : "Documents joints à cet e-mail"
+    }: ${escapeHtml(attachmentsLine)}</p>`,
+  });
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {

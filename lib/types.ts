@@ -288,14 +288,8 @@ export interface QuoteFormContent {
     destinationCityPlaceholder: string;
     transportMode: string;
     incoterms: string;
-    goodsNature: string;
-    goodsNaturePlaceholder: string;
-    grossWeight: string;
-    volume: string;
-    containerType: string;
-    goodsValue: string;
-    currency: string;
-    readyDate: string;
+    hsCode: string;
+    hsCodeHint: string;
     message: string;
     messagePlaceholder: string;
     optionalSuffix: string;
@@ -305,8 +299,11 @@ export interface QuoteFormContent {
     customsClearance: string;
   };
   files: {
-    proformaInvoice: string;
+    billOfLading: string;
+    commercialInvoice: string;
     packingList: string;
+    freightInvoice: string;
+    freightInvoiceHint: string;
     hint: string;
   };
   selectPlaceholder: string;
@@ -321,6 +318,7 @@ export interface QuoteFormContent {
   errors: {
     required: string;
     invalidEmail: string;
+    fileRequired: string;
     fileTooLarge: string;
     fileType: string;
     totalTooLarge: string;
