@@ -8,7 +8,7 @@ export const fr: Dictionary = {
     links: [
       { label: "Accueil", href: "/" },
       { label: "Services", href: "/#services" },
-      { label: "Cotation transit", href: "/cotation" },
+      { label: "Devis transit", href: "/cotation" },
       // { label: "Pays couverts", href: "/#pays-couverts" },
       { label: "Comment ça marche", href: "/#pourquoi" },
       // { label: "À propos", href: "/#temoignages" },
@@ -18,12 +18,12 @@ export const fr: Dictionary = {
   },
   hero: {
     chips: ["Traitement rapide", "Assistance personnalisée", "Paiement sécurisé"],
-    title: "Obtenez votre ECTN | BESC rapidement et",
-    titleAccent: "simplement.",
+    title: "Plus de 12 ans d'expertise au service de vos",
+    titleAccent: "formalités ECTN / BESC.",
     subtitle:
-      "Nous accompagnons exportateurs, transitaires et entreprises dans l'obtention de leurs certificats ECTN/BESC pour leurs expéditions vers l'Afrique.",
-    primaryCta: "Demander mon ECTN",
-    secondaryCta: "Découvrir nos services",
+      "Africa BESC accompagne les exportateurs, transitaires et entreprises dans l’obtention de leurs certificats ECTN/BESC. Forts de plus de 12 ans d’expérience, nous assurons un suivi rigoureux et réactif pour garantir la conformité de vos expéditions et l’obtention rapide de vos certificats.",
+    primaryCta: "Soumettre ma demande ECTN / BESC",
+    secondaryCta: "Découvrir nos autres services",
     // note: "Recevez votre certificat par e-mail ou WhatsApp sous 24 heures suivant le paiement.",
     badgeValue: "Entre 24 et 72 h",
     badgeLabel: "Délai moyen de délivrance",
@@ -48,25 +48,25 @@ export const fr: Dictionary = {
       {
         icon: "file-text",
         title: "ECTN/BESC",
-        subtitle: "Pour la traçabilité de vos marchandises",
+        subtitle: "Pour la conformité de vos expéditions",
         description:
-          "Document obligatoire dans plusieurs pays d'Afrique permettant le suivi électronique des cargaisons et la sécurisation des marchandises.",
+          "Document obligatoire pour de nombreuses destinations africaines, l'ECTN/BESC permet d'assurer la traçabilité des marchandises et la conformité de vos expéditions. Nous prenons en charge l'ensemble des démarches nécessaires à son obtention dans les meilleurs délais.",
         image: "/images/services/ectn-document.jpg",
       },
       {
         icon: "compass",
-        title: "CTN / BESC",
-        subtitle: "Selon la destination",
+        title: "Pays couverts",
+        subtitle: "UNE EXPERTISE MULTI-DESTINATIONS",
         description:
-          "Selon le pays, le document peut être appelé CTN ou BESC. Nous vous accompagnons pour identifier la bonne procédure en fonction de votre destination.",
+          "Les exigences varient selon les pays de destination. Notre équipe vous accompagne dans l'identification des documents requis et vous oriente vers la procédure adaptée afin de garantir la conformité de votre expédition.",
         image: "/images/services/ctn-world-map.jpg",
       },
       {
         icon: "package",
-        title: "Cotation de transit",
-        subtitle: "Formalités d'import en toute clarté",
+        title: "Formalités de transit",
+        subtitle: "IMPORTATION ET EXPORTATION EN TOUTE SÉRÉNITÉ",
         description:
-          "Recevez rapidement une estimation personnalisée de vos frais de formalités de transit et d'acheminement vers votre destination finale.",
+          "Au-delà de l'obtention de votre ECTN/BESC, nous vous accompagnons dans la gestion de vos formalités d'importation et d'exportation : dédouanement, suivi documentaire et coordination des opérations jusqu'à la destination finale de vos marchandises.",
         image: "/images/services/besc-containers.jpg",
       },
       {
@@ -74,7 +74,7 @@ export const fr: Dictionary = {
         title: "Assistance documentaire",
         subtitle: "Un accompagnement de bout en bout",
         description:
-          "Notre équipe vérifie vos documents et vous accompagne à chaque étape, pour une expérience simple, rapide et fiable.",
+          "Notre équipe vérifie la conformité de vos documents et vous assiste à chaque étape de votre dossier afin de garantir un traitement fluide, rapide et sécurisé de vos formalités.",
         image: "/images/services/assistance-paperwork.jpg",
       },
     ],
@@ -298,15 +298,15 @@ export const fr: Dictionary = {
     hero: {
       label: "Cotation de transit",
       chips: ["Réponse rapide", "Accompagnement personnalisé", "Service fiable"],
-      title: "Demandez votre cotation de transit,",
-      titleAccent: "en toute clarté.",
+      title: "Une prise en charge complète de",
+      titleAccent: "vos formalités de transit.",
       subtitle:
-        "Recevez rapidement une estimation personnalisée de vos frais de formalités de transit et d'acheminement vers votre destination finale.",
-      primaryCta: "Obtenir une cotation",
+        "Simplifiez vos opérations d’import-export grâce à une estimation claire des coûts et un accompagnement complet dans vos démarches administratives, douanières et logistiques jusqu’à la destination finale.",
+      primaryCta: "Demander un devis pour mes formalités import-export",
       secondaryCta: "Parler à un conseiller",
       imageAlt:
         "Terminal portuaire : porte-conteneurs, grues et agent de transit sur le quai",
-      imageNote: "Du monde vers l'Afrique, simplement.",
+      imageNote: "",
     },
     intro: {
       label: "Le service",

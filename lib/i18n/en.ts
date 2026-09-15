@@ -18,12 +18,12 @@ export const en: Dictionary = {
   },
   hero: {
     chips: ["Fast processing", "Personal assistance", "Secure payment"],
-    title: "Get your ECTN | BESC quickly and",
-    titleAccent: "simply.",
+    title: "Over 12 years of expertise in handling your",
+    titleAccent: "ECTN/BESC paperwork.",
     subtitle:
-      "We support exporters, freight forwarders and companies in obtaining their ECTN/BESC certificates for shipments to Africa.",
-    primaryCta: "Request my ECTN",
-    secondaryCta: "Explore our services",
+      "Africa BESC assists exporters, freight forwarders, and companies in obtaining their ECTN/BESC certificates. With over 12 years of experience, we provide thorough and responsive support to ensure your shipments are compliant and that you receive your certificates quickly.",
+    primaryCta: "Submit my ECTN/BESC application",
+    secondaryCta: "Explore our other services",
     // note: "Receive your certificate by email or WhatsApp within 24 hours of payment.",
     badgeValue: "24 h",
     badgeLabel: "Average issuing time",
@@ -48,25 +48,25 @@ export const en: Dictionary = {
       {
         icon: "file-text",
         title: "ECTN/BESC",
-        subtitle: "For the traceability of your goods",
+        subtitle: "To Ensure Your Shipments Are Compliant",
         description:
-          "A mandatory document in several African countries that enables electronic tracking of shipments and ensures the security of goods.",
+          "The ECTN/BESC, a mandatory document for many African destinations, ensures the traceability of goods and the compliance of your shipments. We handle all the necessary steps to obtain it as quickly as possible.",
         image: "/images/services/ectn-document.jpg",
       },
       {
-        icon: "package",
-        title: "CTN / BESC",
-        subtitle: "Depending on the destination",
+         icon: "file-text",
+        title: "Countries Covered",
+        subtitle: "EXPERTISE IN MULTIPLE DESTINATIONS",
         description:
-          "Depending on the country, the document may be called a CTN or a BESC. We’ll help you identify the correct procedure based on your destination.",
+          "Requirements vary by destination country. Our team will help you identify the required documents and guide you through the appropriate procedure to ensure your shipment complies with regulations.",
         image: "/images/services/besc-containers.jpg",
       },
       {
         icon: "compass",
-        title: "Transit Quote",
-        subtitle: "Clear import formalities",
+        title: "Transit Procedures",
+        subtitle: "IMPORT AND EXPORT WITH COMPLETE PEACE OF MIND  ",
         description:
-          "Quickly receive a personalized estimate of your transit and shipping costs to your final destination.",
+          "In addition to helping you obtain your ECTN/BESC, we assist you with managing your import and export formalities: customs clearance, document tracking, and coordination of operations all the way to the final destination of your goods.",
         image: "/images/services/ctn-world-map.jpg",
       },
       {
@@ -74,7 +74,7 @@ export const en: Dictionary = {
         title: "Document assistance",
         subtitle: "End-to-end support",
         description:
-          "Our team checks your documents and guides you at every step, for a simple, fast and reliable experience.",
+          "Our team verifies that your documents are in compliance and assists you at every stage of your application to ensure that your paperwork is processed smoothly, quickly, and securely.",
         image: "/images/services/assistance-paperwork.jpg",
       },
     ],
@@ -293,15 +293,15 @@ export const en: Dictionary = {
     hero: {
       label: "Transit quotation",
       chips: ["Fast reply", "Personal support", "Reliable service"],
-      title: "Your imports,",
-      titleAccent: "made clear.",
+      title: "Comprehensive handling of your ",
+      titleAccent: "transit formalities.",
       subtitle:
-        "Get a quick, personalized estimate of your transit and shipping costs to your final destination.",
-      primaryCta: "Get an import request",
+        "Streamline your import and export operations with clear cost estimates and comprehensive support for all administrative, customs, and logistics procedures all the way to the final destination.",
+      primaryCta: "Request a quote for my import and export procedures",
       secondaryCta: "Talk to an advisor",
       imageAlt:
         "Port terminal: container ship, cranes and a transit agent on the quay",
-      imageNote: "From the world to Africa, simply.",
+      imageNote: "",
     },
     intro: {
       label: "The service",
